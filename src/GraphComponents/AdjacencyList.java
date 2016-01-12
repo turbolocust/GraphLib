@@ -7,6 +7,7 @@ import Interfaces.AdjacencyStructure;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -132,12 +133,12 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public LinkedList<T> getAdjacentVertices(T identifier) {
+    public List<T> getAdjacentVertices(T identifier) {
         return _adjacentVertices.get(identifier);
     }
 
     @Override
-    public LinkedList<Edge> getAdjacentEdges(T identifier) {
+    public List<Edge> getAdjacentEdges(T identifier) {
         return _adjacentEdges.get(identifier);
     }
 

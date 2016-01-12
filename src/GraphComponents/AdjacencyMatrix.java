@@ -5,6 +5,7 @@ package GraphComponents;
 
 import Interfaces.AdjacencyStructure;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -163,7 +164,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public LinkedList<T> getAdjacentVertices(T identifier) {
+    public List<T> getAdjacentVertices(T identifier) {
         LinkedList<T> vertices = new LinkedList<>();
         int column = getIndex(identifier);
         for (int i = 0; i < _adjacencyMatrix.length; ++i) {
@@ -175,7 +176,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public LinkedList<Edge> getAdjacentEdges(T identifier) {
+    public List<Edge> getAdjacentEdges(T identifier) {
         LinkedList<Edge> edges = new LinkedList<>();
         int column = getIndex(identifier);
         for (int i = 0; i < _adjacencyMatrix.length; ++i) {

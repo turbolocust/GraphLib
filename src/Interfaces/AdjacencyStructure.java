@@ -15,7 +15,7 @@ import java.util.List;
 public interface AdjacencyStructure<T> {
 
     /**
-     * Prints the adjacency structure
+     * Prints the adjacency structure to console
      */
     void print();
 

@@ -29,9 +29,10 @@ import java.util.Set;
 /**
  *
  * @author Matthias Fussenegger
- * @version 2016-01-12
+ * @version 2016-01-15
  * @param <T> Generic type parameter used for identifiers
  */
+@SuppressWarnings("unchecked")
 public class Graph<T> implements Eulerian {
 
     /**

@@ -28,6 +28,7 @@ import java.util.Set;
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter used for identifiers
  */
+@SuppressWarnings("unchecked")
 public class AdjacencyList<T> implements AdjacencyStructure<T> {
 
     /**
@@ -85,7 +86,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         /*get list from vertices and update neighbours*/
         LinkedList<T> vlist1 = _adjacentVertices.get(v1);
         /*instantiate new edge and add it to map*/
-        Edge<T> e = new Edge(v1, v2, weight);
+        Edge<T> e = new Edge<>(v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
             _adjacentEdges.put(v1, list1);
@@ -119,7 +120,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         LinkedList<T> vlist1 = _adjacentVertices.get(v1);
         LinkedList<T> vlist2 = _adjacentVertices.get(v2);
         /*instantiate new edge and add it to map*/
-        Edge<T> e = new Edge(v1, v2, weight);
+        Edge<T> e = new Edge<>(v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
             _adjacentEdges.put(v1, list1);

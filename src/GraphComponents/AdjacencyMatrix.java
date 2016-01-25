@@ -57,6 +57,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
      *
      * @param size The size of the matrix
      */
+    @SuppressWarnings("unchecked")
     public AdjacencyMatrix(int size) {
         if (size > 0) {
             _vertices = (T[]) new Object[size];
@@ -129,7 +130,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge(id1, id2, weight);
+                Edge<T> e = new Edge<>(id1, id2, weight);
                 _adjacencyMatrix[i][j] = e;
                 return e;
             }
@@ -157,7 +158,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge(id1, id2, weight);
+                Edge<T> e = new Edge<>(id1, id2, weight);
                 _adjacencyMatrix[i][j] = e;
                 _adjacencyMatrix[j][i] = e;
                 return e;

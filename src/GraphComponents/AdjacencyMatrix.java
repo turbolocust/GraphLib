@@ -43,14 +43,14 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     private int _numVertices;
 
     /**
-     * Array that is used to get the right index of vertex
+     * Array that is used to get the right index of vertex by its identifier
      */
     private final T[] _vertices;
 
     /**
      * The adjacency matrix that stores all relationships between vertices
      */
-    private final Edge[][] _adjacencyMatrix;
+    private final Edge[][] _adjMatrix;
 
     /**
      * Instantiates a new AdjacencyMatrix
@@ -61,10 +61,10 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     public AdjacencyMatrix(int size) {
         if (size > 0) {
             _vertices = (T[]) new Object[size];
-            _adjacencyMatrix = new Edge[size][size];
+            _adjMatrix = new Edge[size][size];
         } else {
             _vertices = (T[]) new Object[DEFAULT_SIZE];
-            _adjacencyMatrix = new Edge[DEFAULT_SIZE][DEFAULT_SIZE];
+            _adjMatrix = new Edge[DEFAULT_SIZE][DEFAULT_SIZE];
         }
         _numVertices = 0;
     }
@@ -131,7 +131,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
                 Edge<T> e = new Edge<>(id1, id2, weight);
-                _adjacencyMatrix[i][j] = e;
+                _adjMatrix[i][j] = e;
                 return e;
             }
         }
@@ -150,7 +150,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
 
     @Override
     public Edge<T> addEdgeUndirected(T id1, T id2, int weight) {
-        if (!containsEdgeDirected(id1, id2)) {
+        if (!containsEdgeUndirected(id1, id2)) {
             addVertex(id1);
             addVertex(id2);
 
@@ -159,8 +159,8 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
                 Edge<T> e = new Edge<>(id1, id2, weight);
-                _adjacencyMatrix[i][j] = e;
-                _adjacencyMatrix[j][i] = e;
+                _adjMatrix[i][j] = e;
+                _adjMatrix[j][i] = e;
                 return e;
             }
         }
@@ -181,8 +181,8 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     public List<T> getAdjacentVertices(T identifier) {
         LinkedList<T> vertices = new LinkedList<>();
         int column = getIndex(identifier);
-        for (int i = 0; i < _adjacencyMatrix.length; ++i) {
-            if (_adjacencyMatrix[i][column] != null) {
+        for (int i = 0; i < _adjMatrix.length; ++i) {
+            if (_adjMatrix[i][column] != null) {
                 vertices.add(_vertices[i]);
             }
         }
@@ -193,9 +193,9 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     public List<Edge> getAdjacentEdges(T identifier) {
         LinkedList<Edge> edges = new LinkedList<>();
         int column = getIndex(identifier);
-        for (int i = 0; i < _adjacencyMatrix.length; ++i) {
-            if (_adjacencyMatrix[i][column] != null) {
-                edges.add(_adjacencyMatrix[i][column]);
+        for (int i = 0; i < _adjMatrix.length; ++i) {
+            if (_adjMatrix[i][column] != null) {
+                edges.add(_adjMatrix[i][column]);
             }
         }
         return edges;
@@ -205,7 +205,8 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     public boolean containsEdgeDirected(T id1, T id2) {
         int column = getIndex(id1);
         int row = getIndex(id2);
-        return _adjacencyMatrix[row][column] != null;
+        return _adjMatrix[row][column] != null && _adjMatrix[column][row] == null
+                || _adjMatrix[column][row] != null && _adjMatrix[row][column] == null;
     }
 
     @Override
@@ -217,8 +218,8 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     public boolean containsEdgeUndirected(T id1, T id2) {
         int column = getIndex(id1);
         int row = getIndex(id2);
-        if (_adjacencyMatrix[row][column] != null) {
-            if (_adjacencyMatrix[column][row] != null) {
+        if (_adjMatrix[row][column] != null) {
+            if (_adjMatrix[column][row] != null) {
                 return true;
             }
         }
@@ -239,13 +240,13 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             }
             System.out.println(output);
             output = ""; //reset output
-            for (int i = 0; i < _adjacencyMatrix.length; ++i) {
+            for (int i = 0; i < _adjMatrix.length; ++i) {
                 output += _vertices[i] + "\t";
-                for (int j = 0; j < _adjacencyMatrix[i].length; ++j) {
-                    if (_adjacencyMatrix[i][j] != null) {
-                        output += _adjacencyMatrix[i][j].getWeight() + "\t";
+                for (int j = 0; j < _adjMatrix[i].length; ++j) {
+                    if (_adjMatrix[i][j] != null) {
+                        output += _adjMatrix[i][j].getWeight() + "\t";
                     } else {
-                        output += 0 + "\t"; //zero as there is no edge connected
+                        output += "-" + "\t"; //as there is no edge connected
                     }
                 }
                 System.out.println(output);

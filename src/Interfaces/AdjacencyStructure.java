@@ -47,18 +47,18 @@ public interface AdjacencyStructure<T> {
     int size();
 
     /**
-     * Adds a new Vertex with defined value to the adjacency structure
+     * Adds a new vertex with defined value to the adjacency structure
      *
-     * @param identifier The identifier of the Vertex
-     * @return Null if Vertex already exists in adjacency structure
+     * @param identifier The identifier of the vertex
+     * @return {@code null} if vertex already exists in adjacency structure
      */
     boolean addVertex(T identifier);
 
     /**
-     * Adds an existing Vertex to the adjacency structure
+     * Adds an existing vertex to the adjacency structure
      *
-     * @param v The Vertex to be added to the adjacency structure
-     * @return Null if Vertex already exists in adjacency structure
+     * @param v The vertex to be added to the adjacency structure
+     * @return {@code null} if vertex already exists in adjacency structure
      */
     boolean addVertex(Vertex<T> v);
 
@@ -66,10 +66,10 @@ public interface AdjacencyStructure<T> {
      * Adds a new edge with two new vertices and their defined identifier in
      * both directions
      *
-     * @param v1 The first vertex
-     * @param v2 The second vertex
+     * @param v1 The identifier of the first vertex
+     * @param v2 The identifier of the second vertex
      * @param weight The weight to be set
-     * @return Null if edge already exists
+     * @return {@code null} if edge already exists
      */
     Edge<T> addEdgeUndirected(T v1, T v2, int weight);
 
@@ -79,15 +79,15 @@ public interface AdjacencyStructure<T> {
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight to be set
-     * @return Null if edge already exists
+     * @return {@code null} if edge already exists
      */
     Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight);
 
     /**
-     * Adds a new edge with already defined vertices in both directions
+     * Adds an existent edge with already defined vertices in both directions
      *
      * @param e The edge to be added
-     * @return Null if edge already exists
+     * @return {@code null} if edge already exists
      */
     Edge<T> addEdgeUndirected(Edge<T> e);
 
@@ -97,7 +97,7 @@ public interface AdjacencyStructure<T> {
      * @param v1 The identifier of the first vertex
      * @param v2 The identifier of the second vertex
      * @param weight The weight to be set
-     * @return Null if edge already exists
+     * @return {@code null} if edge already exists
      */
     Edge<T> addEdgeDirected(T v1, T v2, int weight);
 
@@ -107,31 +107,31 @@ public interface AdjacencyStructure<T> {
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight to be set
-     * @return Null if edge already exists
+     * @return {@code null} if edge already exists
      */
     Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight);
 
     /**
-     * Adds a new edge with already defined vertices
+     * Adds an existent edge with already defined vertices
      *
      * @param e The edge to be added
-     * @return Null if edge already exists
+     * @return {@code null} if edge already exists
      */
     Edge<T> addEdgeDirected(Edge<T> e);
 
     /**
-     * Returns a list of children of specified vertex
+     * Returns a list of neighbor vertices of the specified vertex
      *
      * @param identifier The identifier of the specified vertex
-     * @return A list with all children of vertex
+     * @return A list with all neighbor vertices of vertex
      */
     List<T> getAdjacentVertices(T identifier);
 
     /**
-     * Returns a list of connected edges of specified vertex
+     * Returns a list of connected edges on the specified vertex
      *
      * @param identifier The identifier of the specified vertex
-     * @return A list with all connected edges of vertex
+     * @return A list with all connected edges on vertex
      */
     List<Edge> getAdjacentEdges(T identifier);
 
@@ -146,45 +146,44 @@ public interface AdjacencyStructure<T> {
     /**
      * Checks if the specified vertex exists
      *
-     * @param v1 The vertex
+     * @param v1 The vertex to be checked
      * @return True if vertex exists
      */
     boolean containsVertex(Vertex<T> v1);
 
     /**
-     * Checks if the edge between id1 and id2 already exists
+     * Checks if an edge between two vertices exists in only one directions
      *
      * @param id1 The identifier of the first vertex
      * @param id2 The identifier of the second vertex
-     * @return True if edge between id1 and id2 already exists
+     * @return True if edge only exists in one direction
      */
     boolean containsEdgeDirected(T id1, T id2);
 
     /**
-     * Checks if the edge between vertex 1 and vertex 2 already exists
+     * Checks if an edge between two vertices exists in only one direction
      *
      * @param v1 The first vertex
      * @param v2 The second vertex
-     * @return True if edge between vertex 1 and vertex 2 already exists
+     * @return True if edge only exists in one direction
      */
     boolean containsEdgeDirected(Vertex<T> v1, Vertex<T> v2);
 
     /**
-     * Checks if the edge between id1 and id2 already exists in both directions
+     * Checks if an edge between two vertices exists in both directions
      *
      * @param id1 The identifier of the first vertex
      * @param id2 The identifier of the second vertex
-     * @return True if edge between id1 and id2 already exists
+     * @return True if edge exists in both directions
      */
     boolean containsEdgeUndirected(T id1, T id2);
 
     /**
-     * Checks if the edge between vertex 1 and vertex 2 already exists in both
-     * directions
+     * Checks if an edge between two vertices exists in both directions
      *
      * @param v1 The first vertex
      * @param v2 The second vertex
-     * @return True if edge between vertex 1 and vertex 2 already exists
+     * @return True if edge exists in both directions
      */
     boolean containsEdgeUndirected(Vertex<T> v1, Vertex<T> v2);
 }

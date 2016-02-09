@@ -26,7 +26,7 @@ import java.util.List;
 public interface Eulerian<T> {
 
     /**
-     * Depth-first-search on Graph to find all paths
+     * Depth-first-search on graph to find all paths
      *
      * @param root The identifier of the start vertex
      * @return A List with all paths containing the identifiers of vertices

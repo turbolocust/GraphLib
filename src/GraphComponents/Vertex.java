@@ -26,7 +26,7 @@ import java.awt.Color;
 public class Vertex<T> {
 
     /**
-     * The identifier of this Vertex
+     * The identifier of this vertex
      */
     private final T _identifier;
 
@@ -36,9 +36,9 @@ public class Vertex<T> {
     private Color _color;
 
     /**
-     * Initializes a new Vertex with the defined identifier
+     * Initializes a new vertex with the defined identifier
      *
-     * @param identifier The identifier of the new Vertex
+     * @param identifier The identifier of the new vertex
      */
     public Vertex(T identifier) {
         _identifier = identifier;

@@ -28,7 +28,7 @@ public class Edge<T> {
     /**
      * Source and target node that this edge links
      */
-    private T _source, _target; //the nodes that are linked by this edge
+    private T _source, _target;
 
     /**
      * The weight of this edge
@@ -114,7 +114,7 @@ public class Edge<T> {
 
     /**
      * Returns the target vertex of this edge if it does not equal the specified
-     * identifier. Otherwise the ID of the source vertex will be returned.
+     * identifier. Otherwise the ID of the source vertex will be returned
      *
      * @param id The identifier of the vertex to be excluded
      * @return The identifier of the target/source vertex

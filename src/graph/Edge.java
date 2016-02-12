@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package GraphComponents;
+package graph;
 
 import java.awt.Color;
 
@@ -24,6 +24,11 @@ import java.awt.Color;
  * @param <T> Generic type parameter used for identifiers
  */
 public class Edge<T> {
+
+    /**
+     * The identifier of this edge
+     */
+    private final T _identifier;
 
     /**
      * Source and target node that this edge links
@@ -43,10 +48,12 @@ public class Edge<T> {
     /**
      * Initializes a new edge with given source/target
      *
+     * @param id The identifier of this edge
      * @param vertex1 The source vertex
      * @param vertex2 The target vertex
      */
-    public Edge(T vertex1, T vertex2) {
+    public Edge(T id, T vertex1, T vertex2) {
+        _identifier = id;
         _source = vertex1;
         _target = vertex2;
         _color = Color.WHITE;
@@ -55,11 +62,13 @@ public class Edge<T> {
     /**
      * Initializes a new edge with given source/target and weight
      *
+     * @param id The identifier of this edge
      * @param vertex1 The source vertex
      * @param vertex2 The target vertex
      * @param weight The weight of the edge
      */
-    public Edge(T vertex1, T vertex2, int weight) {
+    public Edge(T id, T vertex1, T vertex2, int weight) {
+        _identifier = id;
         _weight = weight;
         _source = vertex1;
         _target = vertex2;
@@ -101,6 +110,15 @@ public class Edge<T> {
      */
     public void setColor(Color c) {
         _color = c;
+    }
+
+    /**
+     * Returns the identifier of this edge
+     *
+     * @return The identifier of this edge
+     */
+    public T getId() {
+        return _identifier;
     }
 
     /**

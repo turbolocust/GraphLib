@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package GraphComponents;
+package graph;
 
-import Interfaces.AdjacencyStructure;
+import graph_interfaces.AdjacencyStructure;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,6 +69,21 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
         _numVertices = 0;
     }
 
+    /**
+     * Returns the index of the specified identifier
+     *
+     * @param identifier The identifier of the vertex
+     * @return The index of the vertex in the array
+     */
+    private int getIndex(T identifier) {
+        for (int i = 0; i < _numVertices; ++i) {
+            if (_vertices[i].equals(identifier)) {
+                return i;
+            }
+        }
+        return NOT_FOUND;
+    }
+
     @Override
     public boolean isEmpty() {
         return _numVertices == 0;
@@ -111,17 +126,8 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
         return containsVertex(v1.getId());
     }
 
-    private int getIndex(T identifier) {
-        for (int i = 0; i < _numVertices; ++i) {
-            if (_vertices[i].equals(identifier)) {
-                return i;
-            }
-        }
-        return NOT_FOUND;
-    }
-
     @Override
-    public Edge<T> addEdgeDirected(T id1, T id2, int weight) {
+    public Edge<T> addEdgeDirected(T id, T id1, T id2, int weight) {
         if (!containsEdgeDirected(id1, id2)) {
             addVertex(id1);
             addVertex(id2);
@@ -130,7 +136,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge<>(id1, id2, weight);
+                Edge<T> e = new Edge<>(id, id1, id2, weight);
                 _adjMatrix[i][j] = e;
                 return e;
             }
@@ -139,18 +145,18 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeDirected(v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeDirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeDirected(id, v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeDirected(Edge<T> e) {
-        return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeDirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(T id1, T id2, int weight) {
-        if (!containsEdgeUndirected(id1, id2)) {
+    public Edge<T> addEdgeUndirected(T id, T id1, T id2, int weight) {
+        if (!containsEdgeDirected(id1, id2) && !containsEdgeDirected(id2, id1)) {
             addVertex(id1);
             addVertex(id2);
 
@@ -158,7 +164,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge<>(id1, id2, weight);
+                Edge<T> e = new Edge<>(id, id1, id2, weight);
                 _adjMatrix[i][j] = e;
                 _adjMatrix[j][i] = e;
                 return e;
@@ -168,13 +174,13 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeUndirected(v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeUndirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeUndirected(id, v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeUndirected(Edge<T> e) {
-        return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeUndirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
@@ -205,8 +211,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     public boolean containsEdgeDirected(T id1, T id2) {
         int column = getIndex(id1);
         int row = getIndex(id2);
-        return _adjMatrix[row][column] != null && _adjMatrix[column][row] == null
-                || _adjMatrix[column][row] != null && _adjMatrix[row][column] == null;
+        return _adjMatrix[row][column] != null;
     }
 
     @Override

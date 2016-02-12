@@ -14,9 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package GraphComponents;
+package graph;
 
-import Interfaces.AdjacencyStructure;
+import graph_interfaces.AdjacencyStructure;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -76,7 +76,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(T v1, T v2, int weight) {
+    public Edge<T> addEdgeDirected(T id, T v1, T v2, int weight) {
         if (containsEdgeDirected(v1, v2)) {
             return null;
         }
@@ -85,7 +85,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         /*get list from edges and update neighbours*/
         LinkedList<Edge> list1 = _adjEdges.get(v1);
         /*instantiate new edge and add it to map*/
-        Edge<T> e = new Edge<>(v1, v2, weight);
+        Edge<T> e = new Edge<>(id, v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
             _adjEdges.put(v1, list1);
@@ -95,18 +95,18 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeDirected(v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeDirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeDirected(id, v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeDirected(Edge<T> e) {
-        return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeDirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(T v1, T v2, int weight) {
-        if (containsEdgeUndirected(v1, v2)) {
+    public Edge<T> addEdgeUndirected(T id, T v1, T v2, int weight) {
+        if (containsEdgeDirected(v1, v2) || containsEdgeDirected(v2, v1)) {
             return null;
         }
         addVertex(v1);
@@ -115,7 +115,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         LinkedList<Edge> list1 = _adjEdges.get(v1);
         LinkedList<Edge> list2 = _adjEdges.get(v2);
         /*instantiate new edge and add it to map*/
-        Edge<T> e = new Edge<>(v1, v2, weight);
+        Edge<T> e = new Edge<>(id, v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
             _adjEdges.put(v1, list1);
@@ -130,13 +130,13 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeUndirected(v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeUndirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeUndirected(id, v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeUndirected(Edge<T> e) {
-        return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeUndirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
@@ -170,25 +170,15 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     public boolean containsEdgeDirected(T id1, T id2) {
         LinkedList<Edge> list = _adjEdges.get(id1);
         T temp; //temporary identifier of vertex
-        int c = 0; //to count directions
 
         /*loop to check first identifier*/
         for (int i = 0; list != null && i < list.size(); ++i) {
             temp = (T) list.get(i).getTarget(id1);
             if (temp.equals(id2)) {
-                ++c;
+                return true;
             }
         }
-        list = _adjEdges.get(id2);
-
-        /*loop to check second identifier*/
-        for (int i = 0; list != null && i < list.size(); ++i) {
-            temp = (T) list.get(i).getTarget(id2);
-            if (temp.equals(id1)) {
-                ++c;
-            }
-        }
-        return (c == 1);
+        return false;
     }
 
     @Override
@@ -198,27 +188,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
 
     @Override
     public boolean containsEdgeUndirected(T id1, T id2) {
-        LinkedList<Edge> list = _adjEdges.get(id1);
-        T temp; //temporary identifier of vertex
-        int c = 0; //to count directions
-
-        /*loop to check first identifier*/
-        for (int i = 0; list != null && i < list.size(); ++i) {
-            temp = (T) list.get(i).getTarget(id1);
-            if (temp.equals(id2)) {
-                ++c;
-            }
-        }
-        list = _adjEdges.get(id2);
-
-        /*loop to check second identifier*/
-        for (int i = 0; list != null && i < list.size(); ++i) {
-            temp = (T) list.get(i).getTarget(id2);
-            if (temp.equals(id1)) {
-                ++c;
-            }
-        }
-        return (c == 2);
+        return containsEdgeDirected(id1, id2) && containsEdgeDirected(id2, id1);
     }
 
     @Override

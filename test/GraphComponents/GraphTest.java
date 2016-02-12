@@ -16,6 +16,9 @@
  */
 package GraphComponents;
 
+import graph.Graph;
+import graph.Vertex;
+import graph.Edge;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -111,12 +114,12 @@ public class GraphTest {
     @Test
     public void testAddEdgeDirected() {
         System.out.println("addEdgeDirected");
-        Integer id = 1;
+        Integer id = 9;
         Integer v1 = 1;
         Integer v2 = 2;
         int weight = 0;
         Graph<Integer> instance = _graph;
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = instance.addEdgeDirected(id, v1, v2, weight);
         assertEquals(expResult, result);
     }
@@ -127,7 +130,7 @@ public class GraphTest {
     @Test
     public void testAddEdgeUndirected() {
         System.out.println("addEdgeUndirected");
-        Integer id = 1;
+        Integer id = 9;
         Integer v1 = 1;
         Integer v2 = 2;
         int weight = 0;
@@ -196,7 +199,7 @@ public class GraphTest {
         Integer id1 = 1;
         Integer id2 = 2;
         Graph<Integer> instance = _graph;
-        boolean expResult = false;
+        boolean expResult = true;
         boolean result = instance.containsEdgeDirected(id1, id2);
         assertEquals(expResult, result);
     }

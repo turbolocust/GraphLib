@@ -14,43 +14,60 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package Interfaces;
+package graph;
 
-import java.util.List;
+import java.awt.Color;
 
 /**
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter used for identifiers
  */
-public interface Eulerian<T> {
+public class Vertex<T> {
 
     /**
-     * Depth-first-search on graph to find all paths
-     *
-     * @param root The identifier of the start vertex
-     * @return A List with all paths containing the identifiers of vertices
+     * The identifier of this vertex
      */
-    List<String> findAllPaths(T root);
+    private final T _identifier;
 
     /**
-     * Determines whether this graph contains a Eulerian path or not
-     *
-     * @return True if this graph contains at least one Eulerian path
+     * The color is e.g. used for searching algorithms
      */
-    boolean isEulerian();
+    private Color _color;
 
     /**
-     * Determines whether this graph contains a Eulerian circuit or not
+     * Initializes a new vertex with the defined identifier
      *
-     * @return True if this graph contains at least one Eulerian circuit
+     * @param identifier The identifier of the new vertex
      */
-    boolean isEulerianTrail();
+    public Vertex(T identifier) {
+        _identifier = identifier;
+    }
 
     /**
-     * Determines whether this graph contains Eulerian cycle or not
+     * Sets the color of this vertex
      *
-     * @return True if this graph contains at least one Eulerian cycle
+     * @param c The color of this vertex
      */
-    boolean isEulerianCycle();
+    public void setColor(Color c) {
+        _color = c;
+    }
+
+    /**
+     * Returns the color of this vertex
+     *
+     * @return The color of this vertex
+     */
+    public Color getColor() {
+        return _color;
+    }
+
+    /**
+     * Returns the identifier of this vertex
+     *
+     * @return The identifier of this vertex
+     */
+    public T getId() {
+        return _identifier;
+    }
 }

@@ -14,60 +14,43 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package GraphComponents;
+package graph_interfaces;
 
-import java.awt.Color;
+import java.util.List;
 
 /**
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter used for identifiers
  */
-public class Vertex<T> {
+public interface Eulerian<T> {
 
     /**
-     * The identifier of this vertex
-     */
-    private final T _identifier;
-
-    /**
-     * The color is e.g. used for searching algorithms
-     */
-    private Color _color;
-
-    /**
-     * Initializes a new vertex with the defined identifier
+     * Depth-first-search on graph to find all paths
      *
-     * @param identifier The identifier of the new vertex
+     * @param root The identifier of the start vertex
+     * @return A List with all paths containing the identifiers of vertices
      */
-    public Vertex(T identifier) {
-        _identifier = identifier;
-    }
+    List<String> findAllPaths(T root);
 
     /**
-     * Sets the color of this vertex
+     * Determines whether this graph contains a Eulerian path or not
      *
-     * @param c The color of this vertex
+     * @return True if this graph contains at least one Eulerian path
      */
-    public void setColor(Color c) {
-        _color = c;
-    }
+    boolean isEulerian();
 
     /**
-     * Returns the color of this vertex
+     * Determines whether this graph contains a Eulerian circuit or not
      *
-     * @return The color of this vertex
+     * @return True if this graph contains at least one Eulerian circuit
      */
-    public Color getColor() {
-        return _color;
-    }
+    boolean isEulerianTrail();
 
     /**
-     * Returns the identifier of this vertex
+     * Determines whether this graph contains Eulerian cycle or not
      *
-     * @return The identifier of this vertex
+     * @return True if this graph contains at least one Eulerian cycle
      */
-    public T getId() {
-        return _identifier;
-    }
+    boolean isEulerianCycle();
 }

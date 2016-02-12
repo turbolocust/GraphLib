@@ -14,11 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package GraphComponents;
+package graph;
 
-import graph.Graph;
-import graph.Vertex;
-import graph.Edge;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;

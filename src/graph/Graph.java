@@ -53,6 +53,17 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
+     * Creates a new graph with the specified size. Therefore, this graph will
+     * be initialized with an adjacency matrix using the specified size
+     *
+     * @param size The size of the matrix
+     */
+    public Graph(int size) {
+        _vertices = new HashMap<>();
+        createGraph(2, size);
+    }
+
+    /**
      * Creates a new graph with the specified arguments
      *
      * @param ajdStructure 1 for adjacency list, 2 for adjacency matrix

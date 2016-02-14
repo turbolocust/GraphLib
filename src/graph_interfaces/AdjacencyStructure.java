@@ -23,7 +23,7 @@ import java.util.List;
 /**
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter used for identifiers
+ * @param <T> Generic type parameter
  */
 public interface AdjacencyStructure<T> {
 
@@ -50,7 +50,7 @@ public interface AdjacencyStructure<T> {
      * Adds a new vertex with specified value to the adjacency structure
      *
      * @param identifier The identifier of the vertex
-     * @return {@code null} if vertex already exists in adjacency structure
+     * @return False if vertex already exists in adjacency structure
      */
     boolean addVertex(T identifier);
 
@@ -58,7 +58,7 @@ public interface AdjacencyStructure<T> {
      * Adds an existing vertex to the adjacency structure
      *
      * @param v The vertex to be added to the adjacency structure
-     * @return {@code null} if vertex already exists in adjacency structure
+     * @return False if vertex already exists in adjacency structure
      */
     boolean addVertex(Vertex<T> v);
 
@@ -71,13 +71,12 @@ public interface AdjacencyStructure<T> {
      * an undirected edge. You can either have two directed edges on each vertex
      * or an undirected edge for both vertices
      *
-     * @param id The identifier of the edge
      * @param v1 The identifier of the first vertex
      * @param v2 The identifier of the second vertex
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeUndirected(T id, T v1, T v2, int weight);
+    Edge<T> addEdgeUndirected(T v1, T v2, int weight);
 
     /**
      * Adds a new edge to the specified vertices in both directions if and only
@@ -87,13 +86,12 @@ public interface AdjacencyStructure<T> {
      * an undirected edge. You can either have two directed edges on each vertex
      * or an undirected edge for both vertices
      *
-     * @param id The identifier of the edge
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeUndirected(T id, Vertex<T> v1, Vertex<T> v2, int weight);
+    Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight);
 
     /**
      * Adds a copy of an edge with already specified vertices in both directions
@@ -112,13 +110,12 @@ public interface AdjacencyStructure<T> {
      * This also means, that if there is an undirected edge connected between
      * these to vertices, no directed edge can be added.
      *
-     * @param id The identifier of the edge
      * @param v1 The identifier of the first vertex
      * @param v2 The identifier of the second vertex
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeDirected(T id, T v1, T v2, int weight);
+    Edge<T> addEdgeDirected(T v1, T v2, int weight);
 
     /**
      * Adds a new edge to the specified vertices if and only if there currently
@@ -127,13 +124,12 @@ public interface AdjacencyStructure<T> {
      * This also means, that if there is an undirected edge connected between
      * these to vertices, no directed edge can be added.
      *
-     * @param id The identifier of the edge
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeDirected(T id, Vertex<T> v1, Vertex<T> v2, int weight);
+    Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight);
 
     /**
      * Adds a copy of an edge with already specified vertices to the adjacency

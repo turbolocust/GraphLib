@@ -27,7 +27,7 @@ import java.util.Set;
 /**
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter used for identifiers
+ * @param <T> Generic type parameter
  */
 @SuppressWarnings("unchecked")
 public class AdjacencyList<T> implements AdjacencyStructure<T> {
@@ -76,7 +76,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(T id, T v1, T v2, int weight) {
+    public Edge<T> addEdgeDirected(T v1, T v2, int weight) {
         if (containsEdgeDirected(v1, v2)) {
             return null;
         }
@@ -85,7 +85,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         /*get list from edges and update neighbours*/
         LinkedList<Edge> list1 = _adjEdges.get(v1);
         /*instantiate new edge and add it to map*/
-        Edge<T> e = new Edge<>(id, v1, v2, weight);
+        Edge<T> e = new Edge<>(v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
             _adjEdges.put(v1, list1);
@@ -95,17 +95,17 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeDirected(id, v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeDirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeDirected(Edge<T> e) {
-        return addEdgeDirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(T id, T v1, T v2, int weight) {
+    public Edge<T> addEdgeUndirected(T v1, T v2, int weight) {
         if (containsEdgeDirected(v1, v2) || containsEdgeDirected(v2, v1)) {
             return null;
         }
@@ -115,7 +115,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         LinkedList<Edge> list1 = _adjEdges.get(v1);
         LinkedList<Edge> list2 = _adjEdges.get(v2);
         /*instantiate new edge and add it to map*/
-        Edge<T> e = new Edge<>(id, v1, v2, weight);
+        Edge<T> e = new Edge<>(v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
             _adjEdges.put(v1, list1);
@@ -130,13 +130,13 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeUndirected(id, v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeUndirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeUndirected(Edge<T> e) {
-        return addEdgeUndirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override

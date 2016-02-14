@@ -16,22 +16,12 @@
  */
 package graph_interfaces;
 
-import java.util.List;
-
 /**
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter used for identifiers
+ * @param <T> Generic type parameter
  */
 public interface Eulerian<T> {
-
-    /**
-     * Depth-first-search on graph to find all paths
-     *
-     * @param root The identifier of the start vertex
-     * @return A List with all paths containing the identifiers of vertices
-     */
-    List<String> findAllPaths(T root);
 
     /**
      * Determines whether this graph contains a Eulerian path or not

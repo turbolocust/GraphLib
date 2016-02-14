@@ -23,7 +23,7 @@ import java.util.List;
 /**
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter used for identifiers
+ * @param <T> Generic type parameter
  */
 public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
 
@@ -127,7 +127,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(T id, T id1, T id2, int weight) {
+    public Edge<T> addEdgeDirected(T id1, T id2, int weight) {
         if (!containsEdgeDirected(id1, id2)) {
             addVertex(id1);
             addVertex(id2);
@@ -136,7 +136,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge<>(id, id1, id2, weight);
+                Edge<T> e = new Edge<>(id1, id2, weight);
                 _adjMatrix[i][j] = e;
                 return e;
             }
@@ -145,17 +145,17 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeDirected(id, v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeDirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeDirected(Edge<T> e) {
-        return addEdgeDirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(T id, T id1, T id2, int weight) {
+    public Edge<T> addEdgeUndirected(T id1, T id2, int weight) {
         if (!containsEdgeDirected(id1, id2) && !containsEdgeDirected(id2, id1)) {
             addVertex(id1);
             addVertex(id2);
@@ -164,7 +164,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge<>(id, id1, id2, weight);
+                Edge<T> e = new Edge<>(id1, id2, weight);
                 _adjMatrix[i][j] = e;
                 _adjMatrix[j][i] = e;
                 return e;
@@ -174,13 +174,13 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
-        return addEdgeUndirected(id, v1.getId(), v2.getId(), weight);
+    public Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight) {
+        return addEdgeUndirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
     public Edge<T> addEdgeUndirected(Edge<T> e) {
-        return addEdgeUndirected(e.getId(), e.getSource(), e.getTarget(), e.getWeight());
+        return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override

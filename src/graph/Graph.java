@@ -18,10 +18,8 @@ package graph;
 
 import graph_interfaces.AdjacencyStructure;
 import graph_interfaces.Eulerian;
-import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -29,7 +27,7 @@ import java.util.Set;
 /**
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter used for identifiers
+ * @param <T> Generic type parameter
  */
 @SuppressWarnings("unchecked")
 public class Graph<T> implements Eulerian {
@@ -40,22 +38,17 @@ public class Graph<T> implements Eulerian {
     private final Map<T, Vertex<T>> _vertices;
 
     /**
-     * Map that stores the Edge to its key
-     */
-    private final Map<T, Edge<T>> _edges;
-
-    /**
      * The adjacency structure used by this graph
      */
     private AdjacencyStructure _adjacencyStructure;
 
     /**
-     * Creates a new graph with no arguments given. Therefore, the graph will be
-     * initialized with a adjacency list by default that offers unbounded size
+     * Creates a new graph with no arguments given. Therefore, this graph will
+     * be initialized with a adjacency list by default that offers unbounded
+     * size
      */
     public Graph() {
         _vertices = new HashMap<>();
-        _edges = new HashMap<>();
         createGraph(1, 0);
     }
 
@@ -67,7 +60,6 @@ public class Graph<T> implements Eulerian {
      */
     public Graph(int ajdStructure, int size) {
         _vertices = new HashMap<>();
-        _edges = new HashMap<>();
         createGraph(ajdStructure, size);
     }
 
@@ -98,7 +90,7 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Adds a new vertex with the specified identifier to the graph
+     * Adds a new vertex with the specified identifier to this graph
      *
      * @param identifier The value to be added to the vertex
      * @return False if vertex already exists in graph
@@ -114,9 +106,9 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Adds an existing vertex to the graph
+     * Adds an existing vertex to this graph
      *
-     * @param v The vertex to be added to the graph
+     * @param v The vertex to be added to this graph
      * @return False if vertex already exists in graph
      */
     public boolean addVertex(Vertex<T> v) {
@@ -131,20 +123,13 @@ public class Graph<T> implements Eulerian {
      * This also means, that if there is an undirected edge connected between
      * these to vertices, no directed edge can be added.
      *
-     * @param id The identifier of the edge
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight of the edge
      * @return False if edge already exists
      */
-    public boolean addEdgeDirected(T id, T v1, T v2, int weight) {
-        Edge<T> e = null;
-        if (!_edges.containsKey(id)) {
-            e = _adjacencyStructure.addEdgeDirected(id, v1, v2, weight);
-            if (e != null) {
-                _edges.put(id, e);
-            }
-        }
+    public boolean addEdgeDirected(T v1, T v2, int weight) {
+        Edge<T> e = _adjacencyStructure.addEdgeDirected(v1, v2, weight);
         return e != null;
     }
 
@@ -155,22 +140,16 @@ public class Graph<T> implements Eulerian {
      * This also means, that if there is an undirected edge connected between
      * these to vertices, no directed edge can be added.
      *
-     * @param id The identifier of the edge
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight of the edge
      * @return False if edge already exists or at least one of the vertices to
      * be added is {@code null}
      */
-    public boolean addEdgeDirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
+    public boolean addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight) {
         Edge<T> e = null;
         if (v1 != null && v2 != null) {
-            if (!_edges.containsKey(id)) {
-                e = _adjacencyStructure.addEdgeDirected(id, v1, v2, weight);
-                if (e != null) {
-                    _edges.put(id, e);
-                }
-            }
+            e = _adjacencyStructure.addEdgeDirected(v1, v2, weight);
         }
         return e != null;
     }
@@ -184,9 +163,7 @@ public class Graph<T> implements Eulerian {
      */
     public boolean addEdgeDirected(Edge<T> e) {
         if (e != null) {
-            if (!_edges.containsKey(e.getId())) {
-                e = _adjacencyStructure.addEdgeDirected(e);
-            }
+            e = _adjacencyStructure.addEdgeDirected(e);
         }
         return e != null;
     }
@@ -200,20 +177,13 @@ public class Graph<T> implements Eulerian {
      * an undirected edge. You can either have two directed edges on each vertex
      * or an undirected edge for both vertices
      *
-     * @param id The identifier of the edge
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight of the edge
      * @return False if edge already exists
      */
-    public boolean addEdgeUndirected(T id, T v1, T v2, int weight) {
-        Edge<T> e = null;
-        if (!_edges.containsKey(id)) {
-            e = _adjacencyStructure.addEdgeUndirected(id, v1, v2, weight);
-            if (e != null) {
-                _edges.put(id, e);
-            }
-        }
+    public boolean addEdgeUndirected(T v1, T v2, int weight) {
+        Edge<T> e = _adjacencyStructure.addEdgeUndirected(v1, v2, weight);
         return e != null;
     }
 
@@ -225,22 +195,16 @@ public class Graph<T> implements Eulerian {
      * an undirected edge. You can either have two directed edges on each vertex
      * or an undirected edge for both vertices
      *
-     * @param id The identifier of the edge
      * @param v1 The first vertex
      * @param v2 The second vertex
      * @param weight The weight of the edge
      * @return False if edge already exists or at least one of the vertices to
      * be added is {@code null}
      */
-    public boolean addEdgeUndirected(T id, Vertex<T> v1, Vertex<T> v2, int weight) {
+    public boolean addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight) {
         Edge<T> e = null;
         if (v1 != null && v2 != null) {
-            if (!_edges.containsKey(id)) {
-                e = _adjacencyStructure.addEdgeUndirected(id, v1, v2, weight);
-                if (e != null) {
-                    _edges.put(id, e);
-                }
-            }
+            e = _adjacencyStructure.addEdgeUndirected(v1, v2, weight);
         }
         return e != null;
     }
@@ -254,9 +218,7 @@ public class Graph<T> implements Eulerian {
      */
     public boolean addEdgeUndirected(Edge<T> e) {
         if (e != null) {
-            if (!_edges.containsKey(e.getId())) {
-                e = _adjacencyStructure.addEdgeUndirected(e);
-            }
+            e = _adjacencyStructure.addEdgeUndirected(e);
         }
         return e != null;
     }
@@ -269,16 +231,6 @@ public class Graph<T> implements Eulerian {
      */
     public Vertex<T> getVertex(T identifier) {
         return _vertices.get(identifier);
-    }
-
-    /**
-     * Returns the edge with the specified identifier
-     *
-     * @param identifier The identifier of the edge to be returned
-     * @return The edge with the specified identifier
-     */
-    public Edge<T> getEdge(T identifier) {
-        return _edges.get(identifier);
     }
 
     /**
@@ -302,23 +254,13 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Checks if the graph contains a vertex with the specified identifier
+     * Checks if this graph contains a vertex with the specified identifier
      *
      * @param identifier The identifier to be checked
      * @return True if graph contains vertex with this identifier
      */
     public boolean containsVertex(T identifier) {
         return _vertices.containsKey(identifier);
-    }
-
-    /**
-     * Checks if the graph contains an edge with the specified identifier
-     *
-     * @param identifier The identifier of the edge
-     * @return True if graph contains edge with this identifier
-     */
-    public boolean containsEdge(T identifier) {
-        return _edges.containsKey(identifier);
     }
 
     /**
@@ -373,74 +315,27 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Returns the number of vertices in the graph
+     * Returns the number of vertices in this graph
      *
-     * @return The number of vertices in the graph
+     * @return The number of vertices in this graph
      */
-    public int numberOfNodes() {
-        return _vertices.size();
+    public int size() {
+        return _adjacencyStructure.size();
     }
 
     /**
-     * Returns the number of edges in the graph
+     * Checks if this graph contains no vertices
      *
-     * @return The number of edges in the graph
+     * @return True if this graph contains no vertices
      */
-    public int numberOfEdges() {
-        return _edges.size();
-    }
-
-    @Override
-    public List<String> findAllPaths(Object root) {
-        _exploredPaths = new LinkedList<>();
-        _visitedQueue = new LinkedList<>();
-        _currentPath = new LinkedList<>();
-
-        Set<T> set = _edges.keySet();
-        Iterator<T> iter = set.iterator();
-        while (iter.hasNext()) {
-            Edge<T> e = _edges.get(iter.next());
-            e.setColor(Color.WHITE);
-        }
-
-        DFS((T) root);
-        return _exploredPaths;
-    }
-
-    /**
-     * Depth-first-search for finding all possible Eulerian paths
-     *
-     * @param root The identifier of the root vertex
-     */
-    private void DFS(T root) {
-        Vertex<T> v = getVertex((T) root);
-
-        _currentPath.push(v);
-
-        if (_visitedQueue.size() == numberOfEdges()) {
-            String path = "";
-            for (int i = _currentPath.size() - 1; i >= 0; --i) {
-                path += "->" + _currentPath.get(i).getId();
-            }
-            _exploredPaths.add(path);
-        }
-        for (Edge e : getAdjacentEdges((T) root)) {
-            if (e.getColor().equals(Color.WHITE)) {
-                e.setColor(Color.GRAY);
-                _visitedQueue.add(e);
-                v = getVertex((T) e.getTarget(root));
-                DFS(v.getId());
-                _visitedQueue.remove(e);
-                e.setColor(Color.WHITE);
-            }
-        }
-        _currentPath.pop();
+    public boolean isEmpty() {
+        return _adjacencyStructure.isEmpty();
     }
 
     @Override
     public boolean isEulerian() {
         int i = 0;
-        if (numberOfEdges() > 0) {
+        if (!isEmpty()) {
             Set<T> set = _vertices.keySet();
             Iterator<T> iter = set.iterator();
             while (iter.hasNext()) {
@@ -457,7 +352,7 @@ public class Graph<T> implements Eulerian {
     @Override
     public boolean isEulerianTrail() {
         int i = 0;
-        if (numberOfEdges() > 0) {
+        if (!isEmpty()) {
             Set<T> set = _vertices.keySet();
             Iterator<T> iter = set.iterator();
             while (iter.hasNext()) {
@@ -474,7 +369,7 @@ public class Graph<T> implements Eulerian {
     @Override
     public boolean isEulerianCycle() {
         int i = 0;
-        if (numberOfEdges() > 0) {
+        if (!isEmpty()) {
             Set<T> set = _vertices.keySet();
             Iterator<T> iter = set.iterator();
             while (iter.hasNext()) {
@@ -487,17 +382,4 @@ public class Graph<T> implements Eulerian {
         }
         return i == 0;
     }
-
-    /**
-     * Contains all explored paths by depth-first-search, used by {@code DFS()}
-     */
-    private LinkedList<String> _exploredPaths;
-    /**
-     * Temporarily holds the edges of the current path, used by {@code DFS()}
-     */
-    private LinkedList<Edge> _visitedQueue;
-    /**
-     * Temporarily holds the vertices of the current path, used by {@code DFS()}
-     */
-    private LinkedList<Vertex> _currentPath;
 }

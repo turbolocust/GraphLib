@@ -44,14 +44,14 @@ public class GraphTest {
         _graph.addVertex(4);
         _graph.addVertex(5);
 
-        _graph.addEdgeUndirected(1, 1, 2, 0);
-        _graph.addEdgeUndirected(2, 1, 3, 0);
-        _graph.addEdgeUndirected(3, 1, 4, 0);
-        _graph.addEdgeUndirected(4, 2, 4, 0);
-        _graph.addEdgeUndirected(5, 2, 3, 0);
-        _graph.addEdgeUndirected(6, 3, 4, 0);
-        _graph.addEdgeUndirected(7, 3, 5, 0);
-        _graph.addEdgeUndirected(8, 4, 5, 0);
+        _graph.addEdgeUndirected(1, 2, 0);
+        _graph.addEdgeUndirected(1, 3, 0);
+        _graph.addEdgeUndirected(1, 4, 0);
+        _graph.addEdgeUndirected(2, 4, 0);
+        _graph.addEdgeUndirected(2, 3, 0);
+        _graph.addEdgeUndirected(3, 4, 0);
+        _graph.addEdgeUndirected(3, 5, 0);
+        _graph.addEdgeUndirected(4, 5, 0);
     }
 
     @BeforeClass
@@ -111,13 +111,12 @@ public class GraphTest {
     @Test
     public void testAddEdgeDirected() {
         System.out.println("addEdgeDirected");
-        Integer id = 9;
         Integer v1 = 1;
         Integer v2 = 2;
         int weight = 0;
         Graph<Integer> instance = _graph;
         boolean expResult = false;
-        boolean result = instance.addEdgeDirected(id, v1, v2, weight);
+        boolean result = instance.addEdgeDirected(v1, v2, weight);
         assertEquals(expResult, result);
     }
 
@@ -127,13 +126,12 @@ public class GraphTest {
     @Test
     public void testAddEdgeUndirected() {
         System.out.println("addEdgeUndirected");
-        Integer id = 9;
         Integer v1 = 1;
         Integer v2 = 2;
         int weight = 0;
         Graph<Integer> instance = _graph;
         boolean expResult = false;
-        boolean result = instance.addEdgeUndirected(id, v1, v2, weight);
+        boolean result = instance.addEdgeUndirected(v1, v2, weight);
         assertEquals(expResult, result);
     }
 
@@ -175,19 +173,6 @@ public class GraphTest {
     }
 
     /**
-     * Test of containsEdge method, of class Graph.
-     */
-    @Test
-    public void testContainsEdge() {
-        System.out.println("containsEdge");
-        Integer identifier = 2;
-        Graph<Integer> instance = _graph;
-        boolean expResult = true;
-        boolean result = instance.containsEdge(identifier);
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of containsEdgeDirected method, of class Graph.
      */
     @Test
@@ -225,43 +210,6 @@ public class GraphTest {
         boolean expResult = true;
         boolean result = instance.containsEdgeUndirected(id1, id2);
         assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of numberOfNodes method, of class Graph.
-     */
-    @Test
-    public void testNumberOfNodes() {
-        System.out.println("numberOfNodes");
-        Graph<Integer> instance = _graph;
-        int expResult = 5;
-        int result = instance.numberOfNodes();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of numberOfEdges method, of class Graph.
-     */
-    @Test
-    public void testNumberOfEdges() {
-        System.out.println("numberOfEdges");
-        Graph<Integer> instance = _graph;
-        int expResult = 8;
-        int result = instance.numberOfEdges();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of findAllPaths method, of class Graph.
-     */
-    @Test
-    public void testFindAllPaths() {
-        System.out.println("findAllPaths");
-        Integer root = 1;
-        int expResult = 44;
-        Graph<Integer> instance = _graph;
-        List<String> result = instance.findAllPaths(root);
-        assertEquals(result.size(), expResult);
     }
 
     /**

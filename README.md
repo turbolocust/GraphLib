@@ -5,4 +5,4 @@ A standard graph library that supports creating directed and undirected Graphs w
   <li>Adjacency matrix</li>
 </ul>
 <br>
-Also supports colors for edges and vertices, depth-first-search to find all paths and check for Eulerian characteristics.
+Also supports colors for edges and vertices and check for Eulerian characteristics.

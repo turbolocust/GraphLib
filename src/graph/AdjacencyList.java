@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * Manages relationships between vertices using map of lists
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter
@@ -43,9 +44,9 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     private final HashMap<T, LinkedList<Edge>> _adjEdges;
 
     /**
-     * Instantiates a new AdjacencyList
+     * Instantiates a new adjacency list
      */
-    public AdjacencyList() {
+    protected AdjacencyList() {
         _vertices = new HashSet<>();
         _adjEdges = new HashMap<>();
     }

@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * Manages relationships between vertices using a matrix
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter
@@ -48,17 +49,17 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     private final T[] _vertices;
 
     /**
-     * The adjacency matrix that stores all relationships between vertices
+     * The matrix that stores all relationships between vertices
      */
     private final Edge[][] _adjMatrix;
 
     /**
-     * Instantiates a new AdjacencyMatrix
+     * Instantiates a new adjacency matrix
      *
      * @param size The size of the matrix
      */
     @SuppressWarnings("unchecked")
-    public AdjacencyMatrix(int size) {
+    protected AdjacencyMatrix(int size) {
         if (size > 0) {
             _vertices = (T[]) new Object[size];
             _adjMatrix = new Edge[size][size];

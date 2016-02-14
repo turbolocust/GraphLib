@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * A graph that makes use of an adjacency structure to manage vertices and edges
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter
@@ -43,9 +44,8 @@ public class Graph<T> implements Eulerian {
     private AdjacencyStructure _adjacencyStructure;
 
     /**
-     * Creates a new graph with no arguments given. Therefore, this graph will
-     * be initialized with a adjacency list by default that offers unbounded
-     * size
+     * Creates a new graph with no arguments. Therefore, this graph will be
+     * initialized with an adjacency list by default that offers unbounded size
      */
     public Graph() {
         _vertices = new HashMap<>();
@@ -53,7 +53,7 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Creates a new graph with the given arguments
+     * Creates a new graph with the specified arguments
      *
      * @param ajdStructure 1 for adjacency list, 2 for adjacency matrix
      * @param size The size of the matrix, obsolete if 1 has been selected

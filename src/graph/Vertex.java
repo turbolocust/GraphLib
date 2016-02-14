@@ -19,9 +19,10 @@ package graph;
 import java.awt.Color;
 
 /**
+ * A vertex is a node of the graph and can be linked with other ones by edges
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter used for identifiers
+ * @param <T> Generic type parameter that is used for identifiers
  */
 public class Vertex<T> {
 

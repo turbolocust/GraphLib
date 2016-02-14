@@ -19,9 +19,10 @@ package graph;
 import java.awt.Color;
 
 /**
+ * An edge links two vertices in one or in both directions
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter used for identifiers
+ * @param <T> Generic type parameter that is used for identifiers
  */
 public class Edge<T> {
 

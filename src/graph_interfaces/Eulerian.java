@@ -17,6 +17,8 @@
 package graph_interfaces;
 
 /**
+ * Any implementing class offers functionality to test graph for Eulerian
+ * characteristics, e.g. if graph contains a Eulerian trail or cycle
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter

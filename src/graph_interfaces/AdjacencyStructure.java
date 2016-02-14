@@ -21,6 +21,8 @@ import graph.Vertex;
 import java.util.List;
 
 /**
+ * Any implementing class is an adjacency structure (e.g. adjacency list or
+ * matrix) for managing relationships between vertices
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter

@@ -18,6 +18,7 @@ package graph;
 
 import graph.components.Edge;
 import graph.components.Vertex;
+import graph.exceptions.GraphException;
 import graph.interfaces.AdjacencyStructure;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,8 +67,12 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
      *
      * @param graph The associated {@code Graph}
      * @param size The size of the matrix (size * size)
+     * @throws graph.exceptions.GraphException If graph is not empty
      */
-    public AdjacencyMatrix(Graph graph, int size) {
+    public AdjacencyMatrix(Graph graph, int size) throws GraphException {
+        if (!graph.isEmpty()) {
+            throw new GraphException("Graph is not empty");
+        }
         if (size > 0) {
             _vertices = (T[]) new Object[size];
             _adjMatrix = new Edge[size][size];

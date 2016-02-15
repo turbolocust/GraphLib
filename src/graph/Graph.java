@@ -18,6 +18,7 @@ package graph;
 
 import graph.components.Edge;
 import graph.components.Vertex;
+import graph.exceptions.GraphException;
 import graph.interfaces.AdjacencyStructure;
 import graph.interfaces.Eulerian;
 import java.util.HashMap;
@@ -25,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A graph that makes use of an adjacency structure to manage vertices and edges
@@ -83,15 +86,19 @@ public class Graph<T> implements Eulerian {
      * @param size The size of the matrix, obsolete if 1 has been selected
      */
     private void createGraph(int adjStructure, int size) {
-        switch (adjStructure) {
-            case 1:
-                _adjacencyStructure = new AdjacencyList(this);
-                break;
-            case 2:
-                _adjacencyStructure = new AdjacencyMatrix(this, size);
-                break;
-            default:
-                throw new IllegalArgumentException("Illegal parameter for adjacency structure");
+        try {
+            switch (adjStructure) {
+                case 1:
+                    _adjacencyStructure = new AdjacencyList(this);
+                    break;
+                case 2:
+                    _adjacencyStructure = new AdjacencyMatrix(this, size);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Illegal parameter for adjacency structure");
+            }
+        } catch (GraphException ex) {
+            Logger.getLogger(Graph.class.getName()).log(Level.SEVERE, ex.toString(), ex);
         }
     }
 
@@ -101,7 +108,7 @@ public class Graph<T> implements Eulerian {
      * @return True if this graph contains no vertices
      */
     public boolean isEmpty() {
-        return _adjacencyStructure.isEmpty();
+        return _vertices.isEmpty();
     }
 
     /**

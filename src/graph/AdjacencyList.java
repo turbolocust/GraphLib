@@ -18,6 +18,7 @@ package graph;
 
 import graph.components.Edge;
 import graph.components.Vertex;
+import graph.exceptions.GraphException;
 import graph.interfaces.AdjacencyStructure;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,23 +55,27 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
      * Instantiates a new adjacency list
      *
      * @param graph The associated {@code Graph}
+     * @throws graph.exceptions.GraphException If graph is not empty
      */
-    public AdjacencyList(Graph graph) {
+    public AdjacencyList(Graph graph) throws GraphException {
+        if (!graph.isEmpty()) {
+            throw new GraphException("Graph is not empty");
+        }
         _vertices = new HashSet<>();
         _adjEdges = new HashMap<>();
         _graph = graph;
     }
-    
+
     @Override
     public boolean isEmpty() {
         return _vertices.isEmpty();
     }
-    
+
     @Override
     public int size() {
         return _vertices.size();
     }
-    
+
     @Override
     public boolean addVertex(T identifier) {
         if (!containsVertex(identifier)) {
@@ -80,23 +85,23 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         }
         return false;
     }
-    
+
     @Override
     public boolean addVertex(Vertex<T> v) {
         _graph.putVertex(v);
         return addVertex(v.getId());
     }
-    
+
     @Override
     public boolean containsVertex(T id) {
         return _vertices.contains(id);
     }
-    
+
     @Override
     public boolean containsVertex(Vertex<T> v1) {
         return containsVertex(v1.getId());
     }
-    
+
     @Override
     public Edge<T> addEdgeDirected(T v1, T v2, float weight) {
         if (containsEdgeDirected(v1, v2)) {
@@ -115,17 +120,17 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         list1.add(e);
         return e;
     }
-    
+
     @Override
     public Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, float weight) {
         return addEdgeDirected(v1.getId(), v2.getId(), weight);
     }
-    
+
     @Override
     public Edge<T> addEdgeDirected(Edge<T> e) {
         return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
     }
-    
+
     @Override
     public Edge<T> addEdgeUndirected(T v1, T v2, float weight) {
         if (containsEdgeDirected(v1, v2) || containsEdgeDirected(v2, v1)) {
@@ -150,34 +155,34 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         list2.add(e);
         return e;
     }
-    
+
     @Override
     public Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, float weight) {
         return addEdgeUndirected(v1.getId(), v2.getId(), weight);
     }
-    
+
     @Override
     public Edge<T> addEdgeUndirected(Edge<T> e) {
         return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
     }
-    
+
     @Override
     public List<T> getAdjacentVertices(T identifier) {
         LinkedList<T> vertices = new LinkedList<>();
         LinkedList<Edge> adjEdges = _adjEdges.get(identifier);
-        
+
         for (Iterator<Edge> it = adjEdges.iterator(); it.hasNext();) {
             Edge<T> e = it.next();
             vertices.add(e.getTarget(identifier));
         }
         return vertices;
     }
-    
+
     @Override
     public List<Edge> getAdjacentEdges(T identifier) {
         return _adjEdges.get(identifier);
     }
-    
+
     @Override
     public boolean containsEdgeDirected(T id1, T id2) {
         LinkedList<Edge> list = _adjEdges.get(id1);
@@ -192,22 +197,22 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
         }
         return false;
     }
-    
+
     @Override
     public boolean containsEdgeDirected(Vertex<T> v1, Vertex<T> v2) {
         return containsEdgeDirected(v1.getId(), v2.getId());
     }
-    
+
     @Override
     public boolean containsEdgeUndirected(T id1, T id2) {
         return containsEdgeDirected(id1, id2) && containsEdgeDirected(id2, id1);
     }
-    
+
     @Override
     public boolean containsEdgeUndirected(Vertex<T> v1, Vertex<T> v2) {
         return containsEdgeUndirected(v1.getId(), v2.getId());
     }
-    
+
     @Override
     public void print() {
         if (!_adjEdges.isEmpty()) {

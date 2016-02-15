@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph_interfaces;
+package graph.interfaces;
 
-import graph.Edge;
-import graph.Vertex;
+import graph.components.Edge;
+import graph.components.Vertex;
 import java.util.List;
 
 /**
@@ -28,11 +28,6 @@ import java.util.List;
  * @param <T> Generic type parameter
  */
 public interface AdjacencyStructure<T> {
-
-    /**
-     * Prints the adjacency structure to console
-     */
-    void print();
 
     /**
      * Checks if this adjacency structure contains no vertices
@@ -78,7 +73,7 @@ public interface AdjacencyStructure<T> {
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeUndirected(T v1, T v2, int weight);
+    Edge<T> addEdgeUndirected(T v1, T v2, float weight);
 
     /**
      * Adds a new edge to the specified vertices in both directions if and only
@@ -93,7 +88,7 @@ public interface AdjacencyStructure<T> {
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight);
+    Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, float weight);
 
     /**
      * Adds a copy of an edge with already specified vertices in both directions
@@ -117,7 +112,7 @@ public interface AdjacencyStructure<T> {
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeDirected(T v1, T v2, int weight);
+    Edge<T> addEdgeDirected(T v1, T v2, float weight);
 
     /**
      * Adds a new edge to the specified vertices if and only if there currently
@@ -131,7 +126,7 @@ public interface AdjacencyStructure<T> {
      * @param weight The weight to be set
      * @return {@code null} if edge already exists
      */
-    Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight);
+    Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, float weight);
 
     /**
      * Adds a copy of an edge with already specified vertices to the adjacency
@@ -209,4 +204,9 @@ public interface AdjacencyStructure<T> {
      * @return True if edge exists in both directions
      */
     boolean containsEdgeUndirected(Vertex<T> v1, Vertex<T> v2);
+
+    /**
+     * Prints the adjacency structure to console
+     */
+    void print();
 }

@@ -16,8 +16,10 @@
  */
 package graph;
 
-import graph_interfaces.AdjacencyStructure;
-import graph_interfaces.Eulerian;
+import graph.components.Edge;
+import graph.components.Vertex;
+import graph.interfaces.AdjacencyStructure;
+import graph.interfaces.Eulerian;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -83,10 +85,10 @@ public class Graph<T> implements Eulerian {
     private void createGraph(int adjStructure, int size) {
         switch (adjStructure) {
             case 1:
-                _adjacencyStructure = new AdjacencyList();
+                _adjacencyStructure = new AdjacencyList(this);
                 break;
             case 2:
-                _adjacencyStructure = new AdjacencyMatrix(size);
+                _adjacencyStructure = new AdjacencyMatrix(this, size);
                 break;
             default:
                 throw new IllegalArgumentException("Illegal parameter for adjacency structure");
@@ -94,10 +96,21 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Prints the {@code AdjacencyStructure} of this graph to console
+     * Checks if this graph contains no vertices
+     *
+     * @return True if this graph contains no vertices
      */
-    public void print() {
-        _adjacencyStructure.print();
+    public boolean isEmpty() {
+        return _adjacencyStructure.isEmpty();
+    }
+
+    /**
+     * Returns the number of vertices in this graph
+     *
+     * @return The number of vertices in this graph
+     */
+    public int size() {
+        return _adjacencyStructure.size();
     }
 
     /**
@@ -107,13 +120,12 @@ public class Graph<T> implements Eulerian {
      * @return False if vertex already exists in graph
      */
     public boolean addVertex(T identifier) {
-        if (containsVertex(identifier)) {
-            return false;
-        } else {
+        if (!containsVertex(identifier)) {
             _adjacencyStructure.addVertex(identifier);
             _vertices.put(identifier, new Vertex<>(identifier));
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -139,7 +151,7 @@ public class Graph<T> implements Eulerian {
      * @param weight The weight of the edge
      * @return False if edge already exists
      */
-    public boolean addEdgeDirected(T v1, T v2, int weight) {
+    public boolean addEdgeDirected(T v1, T v2, float weight) {
         Edge<T> e = _adjacencyStructure.addEdgeDirected(v1, v2, weight);
         return e != null;
     }
@@ -157,7 +169,7 @@ public class Graph<T> implements Eulerian {
      * @return False if edge already exists or at least one of the vertices to
      * be added is {@code null}
      */
-    public boolean addEdgeDirected(Vertex<T> v1, Vertex<T> v2, int weight) {
+    public boolean addEdgeDirected(Vertex<T> v1, Vertex<T> v2, float weight) {
         Edge<T> e = null;
         if (v1 != null && v2 != null) {
             e = _adjacencyStructure.addEdgeDirected(v1, v2, weight);
@@ -193,7 +205,7 @@ public class Graph<T> implements Eulerian {
      * @param weight The weight of the edge
      * @return False if edge already exists
      */
-    public boolean addEdgeUndirected(T v1, T v2, int weight) {
+    public boolean addEdgeUndirected(T v1, T v2, float weight) {
         Edge<T> e = _adjacencyStructure.addEdgeUndirected(v1, v2, weight);
         return e != null;
     }
@@ -212,7 +224,7 @@ public class Graph<T> implements Eulerian {
      * @return False if edge already exists or at least one of the vertices to
      * be added is {@code null}
      */
-    public boolean addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, int weight) {
+    public boolean addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, float weight) {
         Edge<T> e = null;
         if (v1 != null && v2 != null) {
             e = _adjacencyStructure.addEdgeUndirected(v1, v2, weight);
@@ -326,21 +338,36 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Returns the number of vertices in this graph
-     *
-     * @return The number of vertices in this graph
+     * Prints the {@code _adjacencyStructure} of this graph to console
      */
-    public int size() {
-        return _adjacencyStructure.size();
+    public void print() {
+        _adjacencyStructure.print();
     }
 
     /**
-     * Checks if this graph contains no vertices
+     * Called by classes that implement {@code AdjacencyStructure} to add a
+     * vertex to {@code _vertices} map. This ensures that this graph knows all
+     * vertices even if a new vertex has been added via an adjacency structure
      *
-     * @return True if this graph contains no vertices
+     * @param identifier The identifier of the vertex
      */
-    public boolean isEmpty() {
-        return _adjacencyStructure.isEmpty();
+    protected void putVertex(T identifier) {
+        if (!_vertices.containsKey(identifier)) {
+            _vertices.put(identifier, new Vertex<>(identifier));
+        }
+    }
+
+    /**
+     * Called by classes that implement {@code AdjacencyStructure} to add a
+     * vertex to {@code _vertices} map. This ensures that this graph knows all
+     * vertices even if a new vertex has been added via an adjacency structure
+     *
+     * @param v The vertex to be put
+     */
+    protected void putVertex(Vertex<T> v) {
+        if (!_vertices.containsKey(v.getId())) {
+            _vertices.put(v.getId(), v);
+        }
     }
 
     @Override

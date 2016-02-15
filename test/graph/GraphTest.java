@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016 Matthias
+ * Copyright (C) 2016 Matthias Fussenegger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,6 +16,8 @@
  */
 package graph;
 
+import graph.components.Edge;
+import graph.components.Vertex;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -100,8 +102,8 @@ public class GraphTest {
     public void testAddVertex_Vertex() {
         System.out.println("addVertex");
         Graph<Integer> instance = _graph;
-        boolean expResult = false;
-        boolean result = instance.addVertex(new Vertex<>(1));
+        boolean expResult = true;
+        boolean result = instance.addVertex(new Vertex<>(6));
         assertEquals(expResult, result);
     }
 
@@ -113,7 +115,7 @@ public class GraphTest {
         System.out.println("addEdgeDirected");
         Integer v1 = 1;
         Integer v2 = 2;
-        int weight = 0;
+        float weight = 0f;
         Graph<Integer> instance = _graph;
         boolean expResult = false;
         boolean result = instance.addEdgeDirected(v1, v2, weight);
@@ -128,7 +130,7 @@ public class GraphTest {
         System.out.println("addEdgeUndirected");
         Integer v1 = 1;
         Integer v2 = 2;
-        int weight = 0;
+        float weight = 0f;
         Graph<Integer> instance = _graph;
         boolean expResult = false;
         boolean result = instance.addEdgeUndirected(v1, v2, weight);

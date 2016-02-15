@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph_interfaces;
+package graph.interfaces;
 
 /**
  * Any implementing class offers functionality to test graph for Eulerian

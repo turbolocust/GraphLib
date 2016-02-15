@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph;
+package graph.components;
 
 import java.awt.Color;
 
@@ -34,7 +34,7 @@ public class Edge<T> {
     /**
      * The weight of this edge
      */
-    private int _weight;
+    private float _weight;
 
     /**
      * The color is e.g. used for searching algorithms
@@ -60,7 +60,7 @@ public class Edge<T> {
      * @param vertex2 The target vertex
      * @param weight The weight of the edge
      */
-    public Edge(T vertex1, T vertex2, int weight) {
+    public Edge(T vertex1, T vertex2, float weight) {
         _weight = weight;
         _source = vertex1;
         _target = vertex2;
@@ -152,7 +152,7 @@ public class Edge<T> {
      * @return The weight of this edge
      *
      */
-    public int getWeight() {
+    public float getWeight() {
         return _weight;
     }
 }

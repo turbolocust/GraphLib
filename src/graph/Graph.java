@@ -98,7 +98,7 @@ public class Graph<T> implements Eulerian {
                     throw new IllegalArgumentException("Illegal parameter for adjacency structure");
             }
         } catch (GraphException ex) {
-            Logger.getLogger(Graph.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+            Logger.getLogger(Graph.class.getName()).log(Level.SEVERE, "Error creating graph", ex);
         }
     }
 

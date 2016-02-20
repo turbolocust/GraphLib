@@ -345,14 +345,14 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Prints the {@code _adjacencyStructure} of this graph to console
+     * Prints the adjacency structure of this graph to console
      */
     public void print() {
         _adjacencyStructure.print();
     }
 
     /**
-     * Called by classes that implement {@code AdjacencyStructure} to add a
+     * Called by classes that implement {@link AdjacencyStructure} to add a
      * vertex to {@code _vertices} map. This ensures that this graph knows all
      * vertices even if a new vertex has been added via an adjacency structure
      *
@@ -365,7 +365,7 @@ public class Graph<T> implements Eulerian {
     }
 
     /**
-     * Called by classes that implement {@code AdjacencyStructure} to add a
+     * Called by classes that implement {@link AdjacencyStructure} to add a
      * vertex to {@code _vertices} map. This ensures that this graph knows all
      * vertices even if a new vertex has been added via an adjacency structure
      *

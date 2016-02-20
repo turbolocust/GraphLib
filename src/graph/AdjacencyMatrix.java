@@ -65,7 +65,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     /**
      * Instantiates a new adjacency matrix
      *
-     * @param graph The associated {@code Graph}
+     * @param graph The associated {@link Graph}
      * @param size The size of the matrix (size * size)
      * @throws graph.exceptions.GraphException If graph is not empty
      */

@@ -54,7 +54,7 @@ public class AdjacencyList<T> implements AdjacencyStructure<T> {
     /**
      * Instantiates a new adjacency list
      *
-     * @param graph The associated {@code Graph}
+     * @param graph The associated {@link Graph}
      * @throws graph.exceptions.GraphException If graph is not empty
      */
     public AdjacencyList(Graph graph) throws GraphException {

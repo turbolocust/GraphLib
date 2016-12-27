@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph.interfaces;
+package org.graphlib.java.interfaces;
 
 /**
  * Any implementing class offers functionality to test graph for Eulerian
- * characteristics, e.g. if graph contains a Eulerian trail or cycle
+ * characteristics, e.g. if graph contains a Eulerian trail or cycle.
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter
@@ -26,23 +26,24 @@ package graph.interfaces;
 public interface Eulerian<T> {
 
     /**
-     * Determines whether this graph contains a Eulerian path or not
+     * Determines whether this graph contains a Eulerian path or not.
      *
-     * @return True if this graph contains at least one Eulerian path
+     * @return True if this graph contains at least one Eulerian path.
      */
     boolean isEulerian();
 
     /**
-     * Determines whether this graph contains a Eulerian circuit or not
+     * Determines whether this graph contains a Eulerian circuit or not.
      *
-     * @return True if this graph contains at least one Eulerian circuit
+     * @return True if this graph contains at least one Eulerian circuit.
      */
     boolean isEulerianTrail();
 
     /**
-     * Determines whether this graph contains Eulerian cycle or not
+     * Determines whether this graph contains Eulerian cycle or not.
      *
-     * @return True if this graph contains at least one Eulerian cycle
+     * @return True if this graph contains at least one Eulerian cycle.
      */
     boolean isEulerianCycle();
+
 }

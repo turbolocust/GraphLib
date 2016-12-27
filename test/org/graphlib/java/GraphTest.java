@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph;
+package org.graphlib.java;
 
-import graph.components.Edge;
-import graph.components.Vertex;
+import org.graphlib.java.component.Edge;
+import org.graphlib.java.component.Vertex;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -35,7 +35,7 @@ public class GraphTest {
     /**
      * The graph to be tested
      */
-    private final Graph<Integer> _graph;
+    private final Graph<Integer, Float> _graph;
 
     public GraphTest() {
         _graph = new Graph<>(1, 5);
@@ -46,14 +46,14 @@ public class GraphTest {
         _graph.addVertex(4);
         _graph.addVertex(5);
 
-        _graph.addEdgeUndirected(1, 2, 0);
-        _graph.addEdgeUndirected(1, 3, 0);
-        _graph.addEdgeUndirected(1, 4, 0);
-        _graph.addEdgeUndirected(2, 4, 0);
-        _graph.addEdgeUndirected(2, 3, 0);
-        _graph.addEdgeUndirected(3, 4, 0);
-        _graph.addEdgeUndirected(3, 5, 0);
-        _graph.addEdgeUndirected(4, 5, 0);
+        _graph.addEdgeUndirected(1, 2, 0f);
+        _graph.addEdgeUndirected(1, 3, 0f);
+        _graph.addEdgeUndirected(1, 4, 0f);
+        _graph.addEdgeUndirected(2, 4, 0f);
+        _graph.addEdgeUndirected(2, 3, 0f);
+        _graph.addEdgeUndirected(3, 4, 0f);
+        _graph.addEdgeUndirected(3, 5, 0f);
+        _graph.addEdgeUndirected(4, 5, 0f);
     }
 
     @BeforeClass
@@ -78,7 +78,7 @@ public class GraphTest {
     @Test
     public void testPrint() {
         System.out.println("print");
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         instance.print();
     }
 
@@ -89,7 +89,7 @@ public class GraphTest {
     public void testAddVertex_GenericType() {
         System.out.println("addVertex");
         Integer identifier = 1;
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = false;
         boolean result = instance.addVertex(identifier);
         assertEquals(expResult, result);
@@ -101,7 +101,7 @@ public class GraphTest {
     @Test
     public void testAddVertex_Vertex() {
         System.out.println("addVertex");
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.addVertex(new Vertex<>(6));
         assertEquals(expResult, result);
@@ -116,7 +116,7 @@ public class GraphTest {
         Integer v1 = 1;
         Integer v2 = 2;
         float weight = 0f;
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = false;
         boolean result = instance.addEdgeDirected(v1, v2, weight);
         assertEquals(expResult, result);
@@ -131,7 +131,7 @@ public class GraphTest {
         Integer v1 = 1;
         Integer v2 = 2;
         float weight = 0f;
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = false;
         boolean result = instance.addEdgeUndirected(v1, v2, weight);
         assertEquals(expResult, result);
@@ -144,8 +144,8 @@ public class GraphTest {
     public void testGetAdjacentVertices() {
         System.out.println("getAdjacentVertices");
         Integer identifier = 1;
-        Graph<Integer> instance = _graph;
-        List<Vertex> result = instance.getAdjacentVertices(identifier);
+        Graph<Integer, Float> instance = _graph;
+        List<Integer> result = instance.getAdjacentVertices(identifier);
         assertEquals(3, result.size());
     }
 
@@ -156,8 +156,8 @@ public class GraphTest {
     public void testGetAdjacentEdges() {
         System.out.println("getAdjacentEdges");
         Integer identifier = 1;
-        Graph<Integer> instance = _graph;
-        List<Edge> result = instance.getAdjacentEdges(identifier);
+        Graph<Integer, Float> instance = _graph;
+        List<Edge<Integer, Float>> result = instance.getAdjacentEdges(identifier);
         assertEquals(3, result.size());
     }
 
@@ -168,7 +168,7 @@ public class GraphTest {
     public void testContainsVertex() {
         System.out.println("containsVertex");
         Integer identifier = 2;
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.containsVertex(identifier);
         assertEquals(expResult, result);
@@ -182,7 +182,7 @@ public class GraphTest {
         System.out.println("containsEdgeDirected");
         Integer id1 = 1;
         Integer id2 = 2;
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.containsEdgeDirected(id1, id2);
         assertEquals(expResult, result);
@@ -194,7 +194,7 @@ public class GraphTest {
     @Test
     public void testContainsEdgeDirected_Vertex_Vertex() {
         System.out.println("containsEdgeDirected");
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = false;
         boolean result = instance.containsEdgeDirected(new Vertex<>(1), new Vertex<>(2));
         assertEquals(expResult, result);
@@ -208,7 +208,7 @@ public class GraphTest {
         System.out.println("containsEdgeUndirected");
         Integer id1 = 1;
         Integer id2 = 2;
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.containsEdgeUndirected(id1, id2);
         assertEquals(expResult, result);
@@ -220,7 +220,7 @@ public class GraphTest {
     @Test
     public void testIsEulerian() {
         System.out.println("isEulerian");
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.isEulerian();
         assertEquals(expResult, result);
@@ -232,7 +232,7 @@ public class GraphTest {
     @Test
     public void testIsEulerianTrail() {
         System.out.println("isEulerianTrail");
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.isEulerianTrail();
         assertEquals(expResult, result);
@@ -244,7 +244,7 @@ public class GraphTest {
     @Test
     public void testIsEulerianCycle() {
         System.out.println("isEulerianCycle");
-        Graph<Integer> instance = _graph;
+        Graph<Integer, Float> instance = _graph;
         boolean expResult = false;
         boolean result = instance.isEulerianCycle();
         assertEquals(expResult, result);

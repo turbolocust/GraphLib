@@ -14,62 +14,63 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph;
+package org.graphlib.java;
 
-import graph.components.Edge;
-import graph.components.Vertex;
-import graph.exceptions.GraphException;
-import graph.interfaces.AdjacencyStructure;
+import org.graphlib.java.component.Edge;
+import org.graphlib.java.component.Vertex;
+import org.graphlib.java.exception.GraphException;
+import org.graphlib.java.interfaces.AdjacencyStructure;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Manages relationships between vertices using a matrix
+ * Manages relationships between vertices using a 2D matrix.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter
+ * @param <T> Generic type parameter for identifiers
+ * @param <V> Generic type parameter for edge weight
  */
-@SuppressWarnings("unchecked")
-public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
+public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
 
     /**
-     * The default size of the matrix (n*n) if not specified
+     * The default size of the matrix (n*n) if not specified.
      */
     private final int DEFAULT_SIZE = 32;
 
     /**
-     * Constant to define if a value in matrix has not been found
+     * Constant to define if a value in matrix has not been found.
      */
     private final int NOT_FOUND = -1;
 
     /**
-     * The graph that is associated with this class
+     * The graph that is aggregated with this class.
      */
-    private final Graph _graph;
+    private final Graph<T, V> _graph;
 
     /**
-     * The number of vertices stored in matrix
+     * The number of vertices stored in matrix.
      */
     private int _numVertices;
 
     /**
-     * Array that is used to get the right index of vertex by its identifier
+     * Array used to get the right index of a vertex by its identifier.
      */
     private final T[] _vertices;
 
     /**
-     * The matrix that stores all relationships between vertices
+     * The matrix that stores all relationships between vertices.
      */
-    private final Edge[][] _adjMatrix;
+    private final Edge<T, V>[][] _adjMatrix;
 
     /**
-     * Instantiates a new adjacency matrix
+     * Constructs a new adjacency matrix.
      *
      * @param graph The associated {@link Graph}
      * @param size The size of the matrix (size * size)
-     * @throws graph.exceptions.GraphException If graph is not empty
+     * @throws org.graphlib.java.exception.GraphException If graph is not empty
      */
-    public AdjacencyMatrix(Graph graph, int size) throws GraphException {
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    public AdjacencyMatrix(Graph<T, V> graph, int size) throws GraphException {
         if (!graph.isEmpty()) {
             throw new GraphException("Graph is not empty");
         }
@@ -85,10 +86,10 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     /**
-     * Returns the index of the specified identifier
+     * Returns the index of the specified identifier.
      *
-     * @param identifier The identifier of the vertex
-     * @return The index of the vertex in the array
+     * @param identifier The identifier of the vertex.
+     * @return The index of the vertex in the two-dimensional array.
      */
     private int getIndex(T identifier) {
         for (int i = 0; i < _numVertices; ++i) {
@@ -144,7 +145,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(T id1, T id2, float weight) {
+    public Edge<T, V> addEdgeDirected(T id1, T id2, V weight) {
         if (!containsEdgeDirected(id1, id2)) {
             addVertex(id1);
             addVertex(id2);
@@ -153,7 +154,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge<>(id1, id2, weight);
+                Edge<T, V> e = new Edge<>(id1, id2, weight);
                 _adjMatrix[i][j] = e;
                 return e;
             }
@@ -162,17 +163,17 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, float weight) {
+    public Edge<T, V> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, V weight) {
         return addEdgeDirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
-    public Edge<T> addEdgeDirected(Edge<T> e) {
+    public Edge<T, V> addEdgeDirected(Edge<T, V> e) {
         return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(T id1, T id2, float weight) {
+    public Edge<T, V> addEdgeUndirected(T id1, T id2, V weight) {
         if (!containsEdgeDirected(id1, id2) && !containsEdgeDirected(id2, id1)) {
             addVertex(id1);
             addVertex(id2);
@@ -181,7 +182,7 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
             int j = getIndex(id1);
 
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T> e = new Edge<>(id1, id2, weight);
+                Edge<T, V> e = new Edge<>(id1, id2, weight);
                 _adjMatrix[i][j] = e;
                 _adjMatrix[j][i] = e;
                 return e;
@@ -191,12 +192,12 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, float weight) {
+    public Edge<T, V> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, V weight) {
         return addEdgeUndirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
-    public Edge<T> addEdgeUndirected(Edge<T> e) {
+    public Edge<T, V> addEdgeUndirected(Edge<T, V> e) {
         return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
@@ -213,8 +214,8 @@ public class AdjacencyMatrix<T> implements AdjacencyStructure<T> {
     }
 
     @Override
-    public List<Edge> getAdjacentEdges(T identifier) {
-        LinkedList<Edge> edges = new LinkedList<>();
+    public List<Edge<T, V>> getAdjacentEdges(T identifier) {
+        LinkedList<Edge<T, V>> edges = new LinkedList<>();
         int column = getIndex(identifier);
         for (int i = 0; i < _adjMatrix.length; ++i) {
             if (_adjMatrix[i][column] != null) {

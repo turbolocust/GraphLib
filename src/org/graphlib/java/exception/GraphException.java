@@ -14,10 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph.exceptions;
+package org.graphlib.java.exception;
 
 /**
- * Class to handle generic errors that can occur while using graph
+ * Class to handle generic errors that can occur while using graph.
  *
  * @author Matthias Fussenegger
  */
@@ -26,35 +26,35 @@ public class GraphException extends Exception {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Delegates exception to its super class {@link Exception}
+     * Delegates exception to its super class {@link Exception}.
      */
     public GraphException() {
         super();
     }
 
     /**
-     * Delegates error message to its super class {@link Exception}
+     * Delegates error message to its super class {@link Exception}.
      *
-     * @param errorMessage The specified error message
+     * @param errorMessage The specified error message.
      */
     public GraphException(String errorMessage) {
         super(errorMessage);
     }
 
     /**
-     * Delegates exception cause to its super class {@link Exception}
+     * Delegates exception cause to its super class {@link Exception}.
      *
-     * @param cause The cause of this exception
+     * @param cause The cause of this exception.
      */
     public GraphException(Throwable cause) {
         super(cause);
     }
 
     /**
-     * Delegates error message and cause to its super class {@link Exception}
+     * Delegates error message and cause to its super class {@link Exception}.
      *
-     * @param errorMessage The specified error message
-     * @param cause The cause of this exception
+     * @param errorMessage The specified error message.
+     * @param cause The cause of this exception.
      */
     public GraphException(String errorMessage, Throwable cause) {
         super(errorMessage, cause);

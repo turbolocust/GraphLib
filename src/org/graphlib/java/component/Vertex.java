@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph.components;
+package org.graphlib.java.component;
 
 import java.awt.Color;
 
 /**
- * A vertex is a node of the graph and can be linked with other ones by edges
+ * A vertex is a node of the graph and can be linked with other ones by edges.
  *
  * @author Matthias Fussenegger
  * @param <T> Generic type parameter that is used for identifiers
@@ -27,46 +27,46 @@ import java.awt.Color;
 public class Vertex<T> {
 
     /**
-     * The identifier of this vertex
+     * The identifier of this vertex.
      */
     private final T _identifier;
 
     /**
-     * The color is e.g. used for searching algorithms
+     * The color is e.g. used for searching algorithms.
      */
     private Color _color;
 
     /**
-     * Initializes a new vertex with the defined identifier
+     * Initializes a new vertex with the defined identifier.
      *
-     * @param identifier The identifier of the new vertex
+     * @param identifier The identifier of the new vertex.
      */
     public Vertex(T identifier) {
         _identifier = identifier;
     }
 
     /**
-     * Sets the color of this vertex
+     * Sets the color of this vertex.
      *
-     * @param c The color of this vertex
+     * @param c The color of this vertex.
      */
     public void setColor(Color c) {
         _color = c;
     }
 
     /**
-     * Returns the color of this vertex
+     * Returns the color of this vertex.
      *
-     * @return The color of this vertex
+     * @return The color of this vertex.
      */
     public Color getColor() {
         return _color;
     }
 
     /**
-     * Returns the identifier of this vertex
+     * Returns the identifier of this vertex.
      *
-     * @return The identifier of this vertex
+     * @return The identifier of this vertex.
      */
     public T getId() {
         return _identifier;

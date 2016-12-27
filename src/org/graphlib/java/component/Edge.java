@@ -14,38 +14,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package graph.components;
+package org.graphlib.java.component;
 
 import java.awt.Color;
 
 /**
- * An edge links two vertices in one or in both directions
+ * An edge links two vertices in one or in both directions.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter that is used for identifiers
+ * @param <T> Generic type parameter for identifier
+ * @param <V> Generic type parameter for edge weight
  */
-public class Edge<T> {
+public class Edge<T, V> {
 
     /**
-     * Source and target node that this edge links
+     * Source and target node that this edge links.
      */
     private T _source, _target;
 
     /**
-     * The weight of this edge
+     * The weight of this edge.
      */
-    private float _weight;
+    private V _weight;
 
     /**
-     * The color is e.g. used for searching algorithms
+     * The color is e.g. used for searching algorithms.
      */
     private Color _color;
 
     /**
-     * Initializes a new edge with given source/target
+     * Initializes a new edge with given source/target.
      *
-     * @param vertex1 The source vertex
-     * @param vertex2 The target vertex
+     * @param vertex1 The source vertex.
+     * @param vertex2 The target vertex.
      */
     public Edge(T vertex1, T vertex2) {
         _source = vertex1;
@@ -54,13 +55,13 @@ public class Edge<T> {
     }
 
     /**
-     * Initializes a new edge with given source/target and weight
+     * Initializes a new edge with given source/target and weight.
      *
-     * @param vertex1 The source vertex
-     * @param vertex2 The target vertex
-     * @param weight The weight of the edge
+     * @param vertex1 The source vertex.
+     * @param vertex2 The target vertex.
+     * @param weight The weight of the edge.
      */
-    public Edge(T vertex1, T vertex2, float weight) {
+    public Edge(T vertex1, T vertex2, V weight) {
         _weight = weight;
         _source = vertex1;
         _target = vertex2;
@@ -68,10 +69,10 @@ public class Edge<T> {
     }
 
     /**
-     * Sets the source vertex of this edge
+     * Sets the source vertex of this edge.
      *
-     * @param vertex The source vertex to be set
-     * @return False if source is already set
+     * @param vertex The source vertex to be set.
+     * @return False if source is already set.
      */
     public boolean setSource(T vertex) {
         if (_source != null) {
@@ -82,10 +83,10 @@ public class Edge<T> {
     }
 
     /**
-     * Sets the target vertex of this edge
+     * Sets the target vertex of this edge.
      *
-     * @param vertex The target vertex to be set
-     * @return False if target is already set
+     * @param vertex The target vertex to be set.
+     * @return False if target is already set.
      */
     public boolean setTarget(T vertex) {
         if (_target != null) {
@@ -96,18 +97,18 @@ public class Edge<T> {
     }
 
     /**
-     * Sets the color of this edge
+     * Sets the color of this edge.
      *
-     * @param c The color of this edge
+     * @param c The color of this edge.
      */
     public void setColor(Color c) {
         _color = c;
     }
 
     /**
-     * Returns the source vertex of this edge
+     * Returns the source vertex of this edge.
      *
-     * @return The identifier of the source vertex
+     * @return The identifier of the source vertex.
      */
     public T getSource() {
         return _source;
@@ -115,10 +116,10 @@ public class Edge<T> {
 
     /**
      * Returns the target vertex of this edge if it does not equal the specified
-     * identifier. Otherwise the ID of the source vertex will be returned
+     * identifier. Otherwise the ID of the source vertex will be returned.
      *
-     * @param id The identifier of the vertex to be excluded
-     * @return The identifier of the target/source vertex
+     * @param id The identifier of the vertex to be excluded.
+     * @return The identifier of the target/source vertex.
      */
     public T getTarget(T id) {
         if (_target.equals(id)) {
@@ -129,30 +130,30 @@ public class Edge<T> {
     }
 
     /**
-     * Returns the target vertex of this edge
+     * Returns the target vertex of this edge.
      *
-     * @return The identifier of the target vertex
+     * @return The identifier of the target vertex.
      */
     public T getTarget() {
         return _target;
     }
 
     /**
-     * Returns the color of this edge
+     * Returns the color of this edge.
      *
-     * @return The color of this edge
+     * @return The color of this edge.
      */
     public Color getColor() {
         return _color;
     }
 
     /**
-     * Returns the weight of this edge
+     * Returns the weight of this edge.
      *
-     * @return The weight of this edge
+     * @return The weight of this edge.
      *
      */
-    public float getWeight() {
+    public V getWeight() {
         return _weight;
     }
 }

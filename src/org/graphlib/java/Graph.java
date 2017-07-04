@@ -34,11 +34,16 @@ import java.util.logging.Logger;
  * and edges.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter for identifiers
+ * @param <T> Generic type parameter for identifier
  * @param <V> Generic type parameter for edge weight
  */
 @SuppressWarnings("unchecked")
 public class Graph<T, V> implements Eulerian<T> {
+
+    /**
+     * Static reference to logger of this class.
+     */
+    private static final Logger LOG = Logger.getLogger(Graph.class.getName());
 
     /**
      * Map that stores the Vertex to its key.
@@ -56,7 +61,7 @@ public class Graph<T, V> implements Eulerian<T> {
      */
     public Graph() {
         _vertices = new HashMap<>();
-        createGraph(1, 0);
+        createGraph(AdjacencyStructureType.LIST, 0);
     }
 
     /**
@@ -67,40 +72,40 @@ public class Graph<T, V> implements Eulerian<T> {
      */
     public Graph(int size) {
         _vertices = new HashMap<>();
-        createGraph(2, size);
+        createGraph(AdjacencyStructureType.MATRIX, size);
     }
 
     /**
      * Creates a new graph with the specified arguments.
      *
-     * @param ajdStructure 1 for adjacency list, 2 for adjacency matrix.
-     * @param size The size of the matrix, obsolete if 1 has been selected.
+     * @param type Graph will be backed by this adjacency structure.
+     * @param size The size of the matrix, can be ignored with any other type.
      */
-    public Graph(int ajdStructure, int size) {
+    public Graph(AdjacencyStructureType type, int size) {
         _vertices = new HashMap<>();
-        createGraph(ajdStructure, size);
+        createGraph(type, size);
     }
 
     /**
      * Initializes a new graph with the specified adjacency structure.
      *
-     * @param adjStructure 1 for adjacency list, 2 for adjacency matrix.
-     * @param size The size of the matrix, obsolete if 1 has been selected.
+     * @param type Graph will be backed by this adjacency structure.
+     * @param size The size of the matrix, can be ignored with any other type.
      */
-    private void createGraph(int adjStructure, int size) {
+    private void createGraph(AdjacencyStructureType type, int size) {
         try {
-            switch (adjStructure) {
-                case 1:
+            switch (type) {
+                case LIST:
                     _adjacencyStructure = new AdjacencyList<>(this);
                     break;
-                case 2:
+                case MATRIX:
                     _adjacencyStructure = new AdjacencyMatrix<>(this, size);
                     break;
                 default:
                     throw new IllegalArgumentException("Illegal parameter for adjacency structure");
             }
         } catch (GraphException ex) {
-            Logger.getLogger(Graph.class.getName()).log(Level.SEVERE, "Error creating graph", ex);
+            LOG.log(Level.SEVERE, "Error creating graph", ex);
         }
     }
 

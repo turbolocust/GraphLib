@@ -22,15 +22,22 @@ import org.graphlib.java.exception.GraphException;
 import org.graphlib.java.interfaces.AdjacencyStructure;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Manages relationships between vertices using a 2D matrix.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter for identifiers
+ * @param <T> Generic type parameter for identifier
  * @param <V> Generic type parameter for edge weight
  */
 public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
+
+    /**
+     * Static reference to logger of this class.
+     */
+    private static final Logger LOG = Logger.getLogger(AdjacencyMatrix.class.getName());
 
     /**
      * The default size of the matrix (n*n) if not specified.
@@ -257,24 +264,28 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
     @Override
     public void print() {
         if (_vertices.length > 0) {
-            String output = "";
+            StringBuilder output = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             for (int i = 0; i < _vertices.length; ++i) {
-                output += "\t" + _vertices[i];
+                builder.append("\t");
+                builder.append(_vertices[i] != null ? _vertices[i] : "*");
             }
-            System.out.println(output);
-            output = ""; //reset output
+            output.append(builder.toString()).append("\n");
+            builder.setLength(0); // reset
             for (int i = 0; i < _adjMatrix.length; ++i) {
-                output += _vertices[i] + "\t";
+                builder.append(_vertices[i] != null ? _vertices[i] : "*");
+                builder.append("\t");
                 for (int j = 0; j < _adjMatrix[i].length; ++j) {
                     if (_adjMatrix[i][j] != null) {
-                        output += _adjMatrix[i][j].getWeight() + "\t";
+                        builder.append(_adjMatrix[i][j].getWeight()).append("\t");
                     } else {
-                        output += "-" + "\t"; //as there is no edge connected
+                        builder.append("-\t"); // since there is no edge connected
                     }
                 }
-                System.out.println(output);
-                output = ""; //reset output
+                output.append(builder.toString()).append("\n");
+                builder.setLength(0); // reset
             }
+            LOG.log(Level.INFO, output.toString());
         }
     }
 }

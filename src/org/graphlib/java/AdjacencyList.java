@@ -27,15 +27,22 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Manages relationships between vertices using a map of lists.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter for identifiers
+ * @param <T> Generic type parameter for identifier
  * @param <V> Generic type parameter for edge weight
  */
 public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
+
+    /**
+     * Static reference to logger of this class.
+     */
+    private static final Logger LOG = Logger.getLogger(AdjacencyList.class.getName());
 
     /**
      * A set that stores the identifiers of each vertex.
@@ -172,9 +179,9 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
         LinkedList<T> vertices = new LinkedList<>();
         LinkedList<Edge<T, V>> adjEdges = _adjEdges.get(identifier);
 
-        for (Edge<T, V> e : adjEdges) {
+        adjEdges.forEach((e) -> {
             vertices.add(e.getTarget(identifier));
-        }
+        });
         return vertices;
     }
 
@@ -219,17 +226,20 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
             Set<T> set = _adjEdges.keySet();
             Iterator<T> iter = set.iterator();
             List<Edge<T, V>> edges;
-            String output = "";
+            StringBuilder output = new StringBuilder();
+            StringBuilder builder = new StringBuilder();
             while (iter.hasNext()) {
                 T next = iter.next();
                 edges = _adjEdges.get(next);
+                builder.append(next).append(" -> ");
                 for (Edge<T, V> e : edges) {
-                    output += "[" + e.getTarget(next);
-                    output += ", " + e.getWeight() + "] ";
+                    builder.append("[").append(e.getTarget(next));
+                    builder.append(", ").append(e.getWeight()).append("] ");
                 }
-                System.out.println(next + " -> " + output);
-                output = ""; //reset output
+                output.append(builder.toString()).append("\n");
+                builder.setLength(0); // reset
             }
+            LOG.log(Level.INFO, output.toString());
         }
     }
 }

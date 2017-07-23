@@ -50,10 +50,10 @@ public abstract class Graph<T, V> implements AdjacencyStructure<T, V>, Eulerian 
         Graph<T, V> structure;
         switch (type) {
             case LIST:
-                structure = new AdjacencyList<>();
+                structure = new AdjacencyList<T, V>();
                 break;
             case MATRIX:
-                structure = new AdjacencyMatrix<>();
+                structure = new AdjacencyMatrix<T, V>();
                 break;
             default:
                 throw new IllegalArgumentException(type.name());

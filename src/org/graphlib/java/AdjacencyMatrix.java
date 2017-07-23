@@ -152,7 +152,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
             resize();
         }
         if (!containsVertex(id)) {
-            _vertices[_numVertices] = new Vertex<>(id);
+            _vertices[_numVertices] = new Vertex<T>(id);
             ++_numVertices;
             return true;
         }
@@ -179,7 +179,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
         int i = getIndex(id2);
         int j = getIndex(id1);
         if (i != NOT_FOUND && j != NOT_FOUND && _adjMatrix[i][j] == null) {
-            Edge<T, V> e = new Edge<>(id1, id2, weight);
+            Edge<T, V> e = new Edge<T, V>(id1, id2, weight);
             _adjMatrix[i][j] = e;
             return e;
         }
@@ -203,7 +203,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
             int j = getIndex(id1);
             if (i != NOT_FOUND && j != NOT_FOUND) {
                 if (_adjMatrix[i][j] == null && _adjMatrix[j][i] == null) {
-                    Edge<T, V> e = new Edge<>(id1, id2, weight);
+                    Edge<T, V> e = new Edge<T, V>(id1, id2, weight);
                     _adjMatrix[i][j] = e;
                     _adjMatrix[j][i] = e;
                     return e;
@@ -237,7 +237,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
 
     @Override
     public List<Vertex<T>> getAdjacentVertices(T id) {
-        LinkedList<Vertex<T>> vertices = new LinkedList<>();
+        LinkedList<Vertex<T>> vertices = new LinkedList<Vertex<T>>();
         int column = getIndex(id);
         for (int i = 0; i < _adjMatrix.length; ++i) {
             if (_adjMatrix[i][column] != null) {
@@ -249,7 +249,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
 
     @Override
     public List<Edge<T, V>> getAdjacentEdges(T id) {
-        LinkedList<Edge<T, V>> edges = new LinkedList<>();
+        LinkedList<Edge<T, V>> edges = new LinkedList<Edge<T, V>>();
         int column = getIndex(id);
         for (int i = 0; i < _adjMatrix.length; ++i) {
             if (_adjMatrix[i][column] != null) {

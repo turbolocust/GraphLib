@@ -63,8 +63,8 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
      * Constructs a new adjacency list.
      */
     public AdjacencyList() {
-        _vertices = new HashMap<>();
-        _adjEdges = new HashMap<>();
+        _vertices = new HashMap<T, Vertex<T>>();
+        _adjEdges = new HashMap<T, LinkedList<Edge<T, V>>>();
     }
 
     /**
@@ -104,7 +104,7 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
     @Override
     public boolean addVertex(T id) {
         if (!containsVertex(id)) {
-            _vertices.put(id, new Vertex<>(id));
+            _vertices.put(id, new Vertex<T>(id));
             return true;
         }
         return false;
@@ -134,9 +134,9 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
         // get list from edges and update neighbours
         LinkedList<Edge<T, V>> list1 = _adjEdges.get(v1);
         // instantiate new edge and add it to the map
-        Edge<T, V> e = new Edge<>(v1, v2, weight);
+        Edge<T, V> e = new Edge<T, V>(v1, v2, weight);
         if (list1 == null) {
-            list1 = new LinkedList<>();
+            list1 = new LinkedList<Edge<T, V>>();
             _adjEdges.put(v1, list1);
         }
         list1.add(e);
@@ -163,13 +163,13 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
         LinkedList<Edge<T, V>> list1 = _adjEdges.get(v1);
         LinkedList<Edge<T, V>> list2 = _adjEdges.get(v2);
         // instantiate new edge and add it to the map
-        Edge<T, V> e = new Edge<>(v1, v2, weight);
+        Edge<T, V> e = new Edge<T, V>(v1, v2, weight);
         if (list1 == null) {
-            list1 = new LinkedList<>();
+            list1 = new LinkedList<Edge<T, V>>();
             _adjEdges.put(v1, list1);
         }
         if (list2 == null) {
-            list2 = new LinkedList<>();
+            list2 = new LinkedList<Edge<T, V>>();
             _adjEdges.put(v2, list2);
         }
         list1.add(e);
@@ -194,7 +194,7 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
 
     @Override
     public List<Vertex<T>> getVertices() {
-        List<Vertex<T>> vertices = new ArrayList<>(_vertices.size());
+        List<Vertex<T>> vertices = new ArrayList<Vertex<T>>(_vertices.size());
         for (Entry<T, Vertex<T>> entry : _vertices.entrySet()) {
             vertices.add(entry.getValue());
         }
@@ -203,7 +203,7 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
 
     @Override
     public List<Vertex<T>> getAdjacentVertices(T id) {
-        LinkedList<Vertex<T>> vertices = new LinkedList<>();
+        LinkedList<Vertex<T>> vertices = new LinkedList<Vertex<T>>();
         LinkedList<Edge<T, V>> adjEdges = _adjEdges.get(id);
         for (Edge<T, V> edge : adjEdges) {
             vertices.add(_vertices.get(edge.getTarget(id)));

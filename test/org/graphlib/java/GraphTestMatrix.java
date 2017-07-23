@@ -88,7 +88,7 @@ public class GraphTestMatrix extends GraphTest {
         System.out.println("addVertex");
         Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
-        boolean result = instance.addVertex(new Vertex<>(6));
+        boolean result = instance.addVertex(new Vertex<Integer>(6));
         assertEquals(expResult, result);
     }
 
@@ -177,7 +177,8 @@ public class GraphTestMatrix extends GraphTest {
         System.out.println("containsEdgeDirected");
         Graph<Integer, Float> instance = _graph;
         boolean expResult = false;
-        boolean result = instance.containsEdgeDirected(new Vertex<>(1), new Vertex<>(2));
+        boolean result = instance.containsEdgeDirected(
+                new Vertex<Integer>(1), new Vertex<Integer>(2));
         assertEquals(expResult, result);
     }
 

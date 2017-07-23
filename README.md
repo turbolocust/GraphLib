@@ -6,3 +6,5 @@ A standard graph library that supports creating directed and undirected Graphs w
 </ul>
 <br>
 Also supports colors for edges and vertices plus checks for Eulerian characteristics.
+<br />
+This library requires at least Java 6 (Java 1.6).

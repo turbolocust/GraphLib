@@ -23,8 +23,6 @@
  */
 package org.graphlib.java;
 
-import org.junit.Ignore;
-
 /**
  *
  * @author Matthias Fussenegger

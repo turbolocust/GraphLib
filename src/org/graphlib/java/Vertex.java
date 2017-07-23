@@ -21,15 +21,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.graphlib.java.component;
+package org.graphlib.java;
 
 import java.awt.Color;
+import java.util.Objects;
 
 /**
  * A vertex is a node of the graph and can be linked with other ones by edges.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter that is used for identifiers
+ * @param <T> type of the identifier.
  */
 public class Vertex<T> {
 
@@ -46,16 +47,16 @@ public class Vertex<T> {
     /**
      * Initializes a new vertex with the defined identifier.
      *
-     * @param identifier The identifier of the new vertex.
+     * @param id the identifier of the new vertex.
      */
-    public Vertex(T identifier) {
-        _identifier = identifier;
+    public Vertex(T id) {
+        _identifier = id;
     }
 
     /**
      * Sets the color of this vertex.
      *
-     * @param c The color of this vertex.
+     * @param c the color of this vertex.
      */
     public void setColor(Color c) {
         _color = c;
@@ -64,7 +65,7 @@ public class Vertex<T> {
     /**
      * Returns the color of this vertex.
      *
-     * @return The color of this vertex.
+     * @return the color of this vertex.
      */
     public Color getColor() {
         return _color;
@@ -73,9 +74,40 @@ public class Vertex<T> {
     /**
      * Returns the identifier of this vertex.
      *
-     * @return The identifier of this vertex.
+     * @return the identifier of this vertex.
      */
     public T getId() {
         return _identifier;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(_identifier);
+        hash = 89 * hash + Objects.hashCode(_color);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vertex<?> other = (Vertex<?>) obj;
+        if (!Objects.equals(_identifier, other._identifier)) {
+            return false;
+        }
+        return Objects.equals(_color, other._color);
+    }
+
+    @Override
+    public String toString() {
+        return _identifier.toString();
     }
 }

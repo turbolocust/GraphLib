@@ -21,10 +21,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.graphlib.java.interfaces;
+package org.graphlib.java.api;
 
-import org.graphlib.java.component.Edge;
-import org.graphlib.java.component.Vertex;
+import org.graphlib.java.Edge;
+import org.graphlib.java.Vertex;
 import java.util.List;
 
 /**
@@ -32,38 +32,38 @@ import java.util.List;
  * matrix) that manages relationships between vertices.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter for identifiers
- * @param <V> Generic type parameter for edge weight
+ * @param <T> type of the identifier.
+ * @param <V> type of the weight.
  */
 public interface AdjacencyStructure<T, V> {
 
     /**
      * Checks if this adjacency structure contains no vertices.
      *
-     * @return True if this adjacency structure contains no vertices.
+     * @return true if this adjacency structure contains no vertices.
      */
     boolean isEmpty();
 
     /**
      * Returns the number of vertices in this adjacency structure.
      *
-     * @return The number of vertices in adjacency structure.
+     * @return the number of vertices in adjacency structure.
      */
     int size();
 
     /**
      * Adds a new vertex with specified value to the adjacency structure.
      *
-     * @param identifier The identifier of the vertex.
-     * @return False if vertex already exists in adjacency structure.
+     * @param id the identifier of the vertex.
+     * @return false if vertex already exists in adjacency structure.
      */
-    boolean addVertex(T identifier);
+    boolean addVertex(T id);
 
     /**
      * Adds an existing vertex to the adjacency structure.
      *
-     * @param v The vertex to be added to the adjacency structure.
-     * @return False if vertex already exists in adjacency structure.
+     * @param v the vertex to be added to the adjacency structure.
+     * @return false if vertex already exists in adjacency structure.
      */
     boolean addVertex(Vertex<T> v);
 
@@ -76,9 +76,9 @@ public interface AdjacencyStructure<T, V> {
      * undirected edge. You can either have two directed edges on each vertex or
      * an undirected edge for both vertices.
      *
-     * @param v1 The identifier of the first vertex.
-     * @param v2 The identifier of the second vertex.
-     * @param weight The weight to be set.
+     * @param v1 the identifier of the first vertex.
+     * @param v2 the identifier of the second vertex.
+     * @param weight the weight to be set.
      * @return {@code null} if edge already exists.
      */
     Edge<T, V> addEdgeUndirected(T v1, T v2, V weight);
@@ -91,9 +91,9 @@ public interface AdjacencyStructure<T, V> {
      * undirected edge. You can either have two directed edges on each vertex or
      * an undirected edge for both vertices.
      *
-     * @param v1 The first vertex.
-     * @param v2 The second vertex.
-     * @param weight The weight to be set.
+     * @param v1 the first vertex.
+     * @param v2 the second vertex.
+     * @param weight the weight to be set.
      * @return {@code null} if edge already exists.
      */
     Edge<T, V> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, V weight);
@@ -102,7 +102,7 @@ public interface AdjacencyStructure<T, V> {
      * Adds a copy of an edge with already specified vertices in both directions
      * to the adjacency structure (which is either a list or a matrix).
      *
-     * @param e The edge to be added.
+     * @param e the edge to be added.
      * @return {@code null} if edge already exists.
      */
     Edge<T, V> addEdgeUndirected(Edge<T, V> e);
@@ -115,9 +115,9 @@ public interface AdjacencyStructure<T, V> {
      * This also means, that if there is an undirected edge connected between
      * these to vertices, no directed edge can be added.
      *
-     * @param v1 The identifier of the first vertex.
-     * @param v2 The identifier of the second vertex.
-     * @param weight The weight to be set.
+     * @param v1 the identifier of the first vertex.
+     * @param v2 the identifier of the second vertex.
+     * @param weight the weight to be set.
      * @return {@code null} if edge already exists.
      */
     Edge<T, V> addEdgeDirected(T v1, T v2, V weight);
@@ -129,9 +129,9 @@ public interface AdjacencyStructure<T, V> {
      * This also means, that if there is an undirected edge connected between
      * these to vertices, no directed edge can be added.
      *
-     * @param v1 The first vertex.
-     * @param v2 The second vertex.
-     * @param weight The weight to be set.
+     * @param v1 the first vertex.
+     * @param v2 the second vertex.
+     * @param weight the weight to be set.
      * @return {@code null} if edge already exists.
      */
     Edge<T, V> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, V weight);
@@ -140,82 +140,99 @@ public interface AdjacencyStructure<T, V> {
      * Adds a copy of an edge with already specified vertices to the adjacency
      * structure (which is either a list or a matrix).
      *
-     * @param e The edge to be added.
+     * @param e the edge to be added.
      * @return {@code null} if edge already exists.
      */
     Edge<T, V> addEdgeDirected(Edge<T, V> e);
 
     /**
+     * Returns the vertex with the specified identifier if it exits. Otherwise
+     * {@code null} is returned.
+     *
+     * @param id the identifier of the vertex to be returned.
+     * @return the vertex with the specified identifier or {@code null} if it
+     * does not exist in this adjacency structure.
+     */
+    Vertex<T> getVertex(T id);
+
+    /**
+     * Returns a read-only list with all vertices managed by this adjacency
+     * structure.
+     *
+     * @return all vertices managed by this adjacency structure.
+     */
+    List<Vertex<T>> getVertices();
+
+    /**
      * Returns a list of all neighbor vertices of the specified vertex.
      *
-     * @param identifier The identifier of the specified vertex.
-     * @return A list with all neighbor vertices of vertex.
+     * @param id the identifier of the specified vertex.
+     * @return a list with all neighbor vertices of vertex.
      */
-    List<T> getAdjacentVertices(T identifier);
+    List<Vertex<T>> getAdjacentVertices(T id);
 
     /**
      * Returns a list of all connected edges on the specified vertex.
      *
-     * @param identifier The identifier of the specified vertex.
-     * @return A list with all connected edges on the vertex.
+     * @param id the identifier of the specified vertex.
+     * @return a list with all connected edges on the vertex.
      */
-    List<Edge<T, V>> getAdjacentEdges(T identifier);
+    List<Edge<T, V>> getAdjacentEdges(T id);
 
     /**
      * Checks if the specified vertex exists.
      *
-     * @param id The identifier of the vertex.
-     * @return True if vertex exists.
+     * @param id the identifier of the vertex.
+     * @return true if vertex exists.
      */
     boolean containsVertex(T id);
 
     /**
      * Checks if the specified vertex exists.
      *
-     * @param v1 The vertex to be checked.
-     * @return True if vertex exists.
+     * @param v1 the vertex to be checked.
+     * @return true if vertex exists.
      */
     boolean containsVertex(Vertex<T> v1);
 
     /**
      * Checks if an edge between two vertices exists in only one direction.
      *
-     * @param id1 The identifier of the first vertex.
-     * @param id2 The identifier of the second vertex.
-     * @return True if edge only exists in one direction.
+     * @param id1 the identifier of the first vertex.
+     * @param id2 the identifier of the second vertex.
+     * @return true if edge only exists in one direction.
      */
     boolean containsEdgeDirected(T id1, T id2);
 
     /**
      * Checks if an edge between two vertices exists in only one direction.
      *
-     * @param v1 The first vertex.
-     * @param v2 The second vertex.
-     * @return True if edge only exists in one direction.
+     * @param v1 the first vertex.
+     * @param v2 the second vertex.
+     * @return true if edge only exists in one direction.
      */
     boolean containsEdgeDirected(Vertex<T> v1, Vertex<T> v2);
 
     /**
      * Checks if an edge between two vertices exists in both directions.
      *
-     * @param id1 The identifier of the first vertex.
-     * @param id2 The identifier of the second vertex.
-     * @return True if edge exists in both directions.
+     * @param id1 the identifier of the first vertex.
+     * @param id2 the identifier of the second vertex.
+     * @return true if edge exists in both directions.
      */
     boolean containsEdgeUndirected(T id1, T id2);
 
     /**
      * Checks if an edge between two vertices exists in both directions.
      *
-     * @param v1 The first vertex.
-     * @param v2 The second vertex.
-     * @return True if edge exists in both directions.
+     * @param v1 the first vertex.
+     * @param v2 the second vertex.
+     * @return true if edge exists in both directions.
      */
     boolean containsEdgeUndirected(Vertex<T> v1, Vertex<T> v2);
 
     /**
-     * Prints the adjacency structure using {@code System.out}.
+     * Prints the adjacency structure.
      */
     void print();
-
 }

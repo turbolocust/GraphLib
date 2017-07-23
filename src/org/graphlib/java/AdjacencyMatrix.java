@@ -23,23 +23,23 @@
  */
 package org.graphlib.java;
 
-import org.graphlib.java.component.Edge;
-import org.graphlib.java.component.Vertex;
-import org.graphlib.java.exception.GraphException;
-import org.graphlib.java.interfaces.AdjacencyStructure;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Manages relationships between vertices using a 2D matrix.
+ * Manages relationships between vertices using an {@code n*n} matrix.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter for identifier
- * @param <V> Generic type parameter for edge weight
+ * @param <T> type of the identifier.
+ * @param <V> type of the weight.
  */
-public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
+public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
 
     /**
      * Static reference to logger of this class.
@@ -57,11 +57,6 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
     private final int NOT_FOUND = -1;
 
     /**
-     * The graph that is aggregated with this class.
-     */
-    private final Graph<T, V> _graph;
-
-    /**
      * The number of vertices stored in matrix.
      */
     private int _numVertices;
@@ -69,49 +64,75 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
     /**
      * Array used to get the right index of a vertex by its identifier.
      */
-    private final T[] _vertices;
+    private Vertex<T>[] _vertices;
 
     /**
      * The matrix that stores all relationships between vertices.
      */
-    private final Edge<T, V>[][] _adjMatrix;
+    private Edge<T, V>[][] _adjMatrix;
 
     /**
      * Constructs a new adjacency matrix.
-     *
-     * @param graph The associated {@link Graph}
-     * @param size The size of the matrix (size * size)
-     * @throws org.graphlib.java.exception.GraphException If graph is not empty
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    public AdjacencyMatrix(Graph<T, V> graph, int size) throws GraphException {
-        if (!graph.isEmpty()) {
-            throw new GraphException("Graph is not empty");
+    public AdjacencyMatrix() {
+        init(DEFAULT_SIZE);
+    }
+
+    /**
+     * Constructs a new adjacency matrix with the specified size.
+     *
+     * @param size the size of the matrix (size * size)
+     */
+    public AdjacencyMatrix(int size) {
+        if (size < 1) {
+            throw new IllegalArgumentException("Size must not be zero or negative.");
         }
-        if (size > 0) {
-            _vertices = (T[]) new Object[size];
-            _adjMatrix = new Edge[size][size];
-        } else {
-            _vertices = (T[]) new Object[DEFAULT_SIZE];
-            _adjMatrix = new Edge[DEFAULT_SIZE][DEFAULT_SIZE];
-        }
-        _graph = graph;
+        init(size);
+    }
+
+    /**
+     * Initializes the matrix with the specified size.
+     *
+     * @param size the size of the matrix.
+     */
+    @SuppressWarnings("unchecked")
+    private void init(int size) {
+        _vertices = (Vertex<T>[]) Array.newInstance(Vertex.class, size);
+        _adjMatrix = (Edge<T, V>[][]) Array.newInstance(Edge.class, size, size);
         _numVertices = 0;
     }
 
     /**
      * Returns the index of the specified identifier.
      *
-     * @param identifier The identifier of the vertex.
-     * @return The index of the vertex in the two-dimensional array.
+     * @param id the identifier of the vertex.
+     * @return the index of the vertex in the one-dimensional array.
      */
-    private int getIndex(T identifier) {
+    private int getIndex(T id) {
         for (int i = 0; i < _numVertices; ++i) {
-            if (_vertices[i].equals(identifier)) {
+            Vertex<T> vertex = _vertices[i];
+            if (vertex != null && vertex.getId().equals(id)) {
                 return i;
             }
         }
         return NOT_FOUND;
+    }
+
+    /**
+     * Resizes the adjacency matrix by roughly double the size.
+     */
+    @SuppressWarnings("unchecked")
+    private void resize() {
+        int newSize = _vertices.length * 2 + 1;
+        _vertices = Arrays.copyOf(_vertices, newSize);
+        Edge<T, V>[][] matrix = (Edge<T, V>[][]) Array.newInstance(
+                Edge.class, newSize, newSize);
+        for (int i = 0; i < _adjMatrix.length; ++i) {
+            for (int j = 0; j < _adjMatrix.length; ++j) {
+                matrix[i][j] = _adjMatrix[i][j];
+            }
+        }
+        _adjMatrix = matrix;
     }
 
     @Override
@@ -125,32 +146,27 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
     }
 
     @Override
-    public boolean addVertex(T identifier) {
-        if (_numVertices != _vertices.length) {
-            if (!containsVertex(identifier)) {
-                _vertices[_numVertices] = identifier;
-                _graph.putVertex(identifier);
-                ++_numVertices;
-                return true;
-            }
+    @SuppressWarnings("unchecked")
+    public boolean addVertex(T id) {
+        if (_numVertices == _vertices.length) {
+            resize();
+        }
+        if (!containsVertex(id)) {
+            _vertices[_numVertices] = new Vertex<>(id);
+            ++_numVertices;
+            return true;
         }
         return false;
     }
 
     @Override
     public boolean addVertex(Vertex<T> v) {
-        _graph.putVertex(v);
         return addVertex(v.getId());
     }
 
     @Override
-    public boolean containsVertex(T identifier) {
-        for (int i = 0; i < _numVertices; ++i) {
-            if (_vertices[i].equals(identifier)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean containsVertex(T id) {
+        return getIndex(id) != NOT_FOUND;
     }
 
     @Override
@@ -160,18 +176,12 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
 
     @Override
     public Edge<T, V> addEdgeDirected(T id1, T id2, V weight) {
-        if (!containsEdgeDirected(id1, id2)) {
-            addVertex(id1);
-            addVertex(id2);
-
-            int i = getIndex(id2);
-            int j = getIndex(id1);
-
-            if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T, V> e = new Edge<>(id1, id2, weight);
-                _adjMatrix[i][j] = e;
-                return e;
-            }
+        int i = getIndex(id2);
+        int j = getIndex(id1);
+        if (i != NOT_FOUND && j != NOT_FOUND && _adjMatrix[i][j] == null) {
+            Edge<T, V> e = new Edge<>(id1, id2, weight);
+            _adjMatrix[i][j] = e;
+            return e;
         }
         return null;
     }
@@ -189,17 +199,15 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
     @Override
     public Edge<T, V> addEdgeUndirected(T id1, T id2, V weight) {
         if (!containsEdgeDirected(id1, id2) && !containsEdgeDirected(id2, id1)) {
-            addVertex(id1);
-            addVertex(id2);
-
             int i = getIndex(id2);
             int j = getIndex(id1);
-
             if (i != NOT_FOUND && j != NOT_FOUND) {
-                Edge<T, V> e = new Edge<>(id1, id2, weight);
-                _adjMatrix[i][j] = e;
-                _adjMatrix[j][i] = e;
-                return e;
+                if (_adjMatrix[i][j] == null && _adjMatrix[j][i] == null) {
+                    Edge<T, V> e = new Edge<>(id1, id2, weight);
+                    _adjMatrix[i][j] = e;
+                    _adjMatrix[j][i] = e;
+                    return e;
+                }
             }
         }
         return null;
@@ -216,9 +224,21 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
     }
 
     @Override
-    public List<T> getAdjacentVertices(T identifier) {
-        LinkedList<T> vertices = new LinkedList<>();
-        int column = getIndex(identifier);
+    public Vertex<T> getVertex(T id) {
+        id = Objects.requireNonNull(id);
+        final int i = getIndex(id);
+        return i != NOT_FOUND ? _vertices[i] : null;
+    }
+
+    @Override
+    public List<Vertex<T>> getVertices() {
+        return Collections.unmodifiableList(Arrays.asList(_vertices));
+    }
+
+    @Override
+    public List<Vertex<T>> getAdjacentVertices(T id) {
+        LinkedList<Vertex<T>> vertices = new LinkedList<>();
+        int column = getIndex(id);
         for (int i = 0; i < _adjMatrix.length; ++i) {
             if (_adjMatrix[i][column] != null) {
                 vertices.add(_vertices[i]);
@@ -228,9 +248,9 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
     }
 
     @Override
-    public List<Edge<T, V>> getAdjacentEdges(T identifier) {
+    public List<Edge<T, V>> getAdjacentEdges(T id) {
         LinkedList<Edge<T, V>> edges = new LinkedList<>();
-        int column = getIndex(identifier);
+        int column = getIndex(id);
         for (int i = 0; i < _adjMatrix.length; ++i) {
             if (_adjMatrix[i][column] != null) {
                 edges.add(_adjMatrix[i][column]);
@@ -241,9 +261,14 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
 
     @Override
     public boolean containsEdgeDirected(T id1, T id2) {
-        int column = getIndex(id1);
-        int row = getIndex(id2);
-        return _adjMatrix[row][column] != null;
+        int i = getIndex(id1);
+        int j = getIndex(id2);
+        if (i == NOT_FOUND || j == NOT_FOUND) {
+            return false;
+        }
+        Edge<T, V> e1 = _adjMatrix[i][j];
+        Edge<T, V> e2 = _adjMatrix[j][i];
+        return e1 != null && (e2 == null || !e1.equals(e2));
     }
 
     @Override
@@ -253,14 +278,14 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
 
     @Override
     public boolean containsEdgeUndirected(T id1, T id2) {
-        int column = getIndex(id1);
-        int row = getIndex(id2);
-        if (_adjMatrix[row][column] != null) {
-            if (_adjMatrix[column][row] != null) {
-                return true;
-            }
+        int i = getIndex(id1);
+        int j = getIndex(id2);
+        if (i == NOT_FOUND && j == NOT_FOUND) {
+            return false;
         }
-        return false;
+        Edge<T, V> e1 = _adjMatrix[i][j];
+        Edge<T, V> e2 = _adjMatrix[j][i];
+        return e1 != null && e2 != null && e1.equals(e2);
     }
 
     @Override
@@ -294,5 +319,56 @@ public class AdjacencyMatrix<T, V> implements AdjacencyStructure<T, V> {
             }
             LOG.log(Level.INFO, output.toString());
         }
+    }
+
+    @Override
+    public boolean isEulerian() {
+        int c = 0;
+        if (!isEmpty()) {
+            for (int i = 0; i < _vertices.length; ++i) {
+                Vertex<T> next = _vertices[i];
+                if (next != null) {
+                    List<Edge<T, V>> edges = getAdjacentEdges(next.getId());
+                    if ((edges.size() % 2) != 0) { // odd
+                        ++i;
+                    }
+                }
+            }
+        }
+        return c == 0 || c == 2;
+    }
+
+    @Override
+    public boolean isEulerianTrail() {
+        int c = 0;
+        if (!isEmpty()) {
+            for (int i = 0; i < _vertices.length; ++i) {
+                Vertex<T> next = _vertices[i];
+                if (next != null) {
+                    List<Edge<T, V>> edges = getAdjacentEdges(next.getId());
+                    if ((edges.size() % 2) != 0) { // odd
+                        ++c;
+                    }
+                }
+            }
+        }
+        return c == 2;
+    }
+
+    @Override
+    public boolean isEulerianCycle() {
+        int c = 0;
+        if (!isEmpty()) {
+            for (int i = 0; i < _vertices.length; ++i) {
+                Vertex<T> next = _vertices[i];
+                if (next != null) {
+                    List<Edge<T, V>> edges = getAdjacentEdges(next.getId());
+                    if ((edges.size() % 2) != 0) { // odd
+                        ++c;
+                    }
+                }
+            }
+        }
+        return c == 0;
     }
 }

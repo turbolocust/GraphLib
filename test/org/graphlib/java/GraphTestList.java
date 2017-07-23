@@ -23,8 +23,6 @@
  */
 package org.graphlib.java;
 
-import org.graphlib.java.component.Edge;
-import org.graphlib.java.component.Vertex;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -75,7 +73,7 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testAddVertex_GenericType() {
         System.out.println("addVertex");
-        Integer identifier = 1;
+        int identifier = 1;
         Graph<Integer, Float> instance = _graph;
         boolean expResult = false;
         boolean result = instance.addVertex(identifier);
@@ -100,13 +98,11 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testAddEdgeDirected() {
         System.out.println("addEdgeDirected");
-        Integer v1 = 1;
-        Integer v2 = 2;
+        int v1 = 1;
+        int v2 = 2;
         float weight = 0f;
         Graph<Integer, Float> instance = _graph;
-        boolean expResult = false;
-        boolean result = instance.addEdgeDirected(v1, v2, weight);
-        assertEquals(expResult, result);
+        assertNotNull(instance.addEdgeDirected(v1, v2, weight));
     }
 
     /**
@@ -115,13 +111,11 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testAddEdgeUndirected() {
         System.out.println("addEdgeUndirected");
-        Integer v1 = 1;
-        Integer v2 = 2;
+        int v1 = 1;
+        int v2 = 2;
         float weight = 0f;
         Graph<Integer, Float> instance = _graph;
-        boolean expResult = false;
-        boolean result = instance.addEdgeUndirected(v1, v2, weight);
-        assertEquals(expResult, result);
+        assertNotNull(instance.addEdgeUndirected(v1, v2, weight));
     }
 
     /**
@@ -130,9 +124,9 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testGetAdjacentVertices() {
         System.out.println("getAdjacentVertices");
-        Integer identifier = 1;
+        int identifier = 1;
         Graph<Integer, Float> instance = _graph;
-        List<Integer> result = instance.getAdjacentVertices(identifier);
+        List<Vertex<Integer>> result = instance.getAdjacentVertices(identifier);
         assertEquals(3, result.size());
     }
 
@@ -142,7 +136,7 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testGetAdjacentEdges() {
         System.out.println("getAdjacentEdges");
-        Integer identifier = 1;
+        int identifier = 1;
         Graph<Integer, Float> instance = _graph;
         List<Edge<Integer, Float>> result = instance.getAdjacentEdges(identifier);
         assertEquals(3, result.size());
@@ -154,7 +148,7 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testContainsVertex() {
         System.out.println("containsVertex");
-        Integer identifier = 2;
+        int identifier = 2;
         Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.containsVertex(identifier);
@@ -167,10 +161,10 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testContainsEdgeDirected_GenericType_GenericType() {
         System.out.println("containsEdgeDirected");
-        Integer id1 = 1;
-        Integer id2 = 2;
+        int id1 = 1;
+        int id2 = 2;
         Graph<Integer, Float> instance = _graph;
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = instance.containsEdgeDirected(id1, id2);
         assertEquals(expResult, result);
     }
@@ -193,8 +187,8 @@ public class GraphTestList extends GraphTest {
     @Test
     public void testContainsEdgeUndirected_GenericType_GenericType() {
         System.out.println("containsEdgeUndirected");
-        Integer id1 = 1;
-        Integer id2 = 2;
+        int id1 = 1;
+        int id2 = 2;
         Graph<Integer, Float> instance = _graph;
         boolean expResult = true;
         boolean result = instance.containsEdgeUndirected(id1, id2);

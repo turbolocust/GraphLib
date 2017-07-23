@@ -21,49 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.graphlib.java.exception;
+package org.graphlib.java.api;
 
 /**
- * Class to handle generic errors that can occur while using graph.
+ * Any implementing class offers functionality to test graph for Eulerian
+ * characteristics, e.g. if graph contains a Eulerian trail or cycle.
  *
  * @author Matthias Fussenegger
  */
-public class GraphException extends Exception {
-
-    private static final long serialVersionUID = 1L;
+public interface Eulerian {
 
     /**
-     * Delegates exception to its super class {@link Exception}.
-     */
-    public GraphException() {
-        super();
-    }
-
-    /**
-     * Delegates error message to its super class {@link Exception}.
+     * Determines whether this graph contains a Eulerian path or not.
      *
-     * @param errorMessage The specified error message.
+     * @return true if this graph contains at least one Eulerian path.
      */
-    public GraphException(String errorMessage) {
-        super(errorMessage);
-    }
+    boolean isEulerian();
 
     /**
-     * Delegates exception cause to its super class {@link Exception}.
+     * Determines whether this graph contains a Eulerian circuit or not.
      *
-     * @param cause The cause of this exception.
+     * @return true if this graph contains at least one Eulerian circuit.
      */
-    public GraphException(Throwable cause) {
-        super(cause);
-    }
+    boolean isEulerianTrail();
 
     /**
-     * Delegates error message and cause to its super class {@link Exception}.
+     * Determines whether this graph contains Eulerian cycle or not.
      *
-     * @param errorMessage The specified error message.
-     * @param cause The cause of this exception.
+     * @return true if this graph contains at least one Eulerian cycle.
      */
-    public GraphException(String errorMessage, Throwable cause) {
-        super(errorMessage, cause);
-    }
+    boolean isEulerianCycle();
+
 }

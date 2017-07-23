@@ -23,27 +23,25 @@
  */
 package org.graphlib.java;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import org.junit.Test;
+import org.junit.Ignore;
 
 /**
  *
  * @author Matthias Fussenegger
  */
-public class GraphTest {
+public abstract class GraphTest {
 
     /**
      * The graph to be tested.
      */
     protected final Graph<Integer, Float> _graph;
 
-    public GraphTest() {
+    protected GraphTest() {
         this(AdjacencyStructureType.LIST);
     }
 
     protected GraphTest(AdjacencyStructureType type) {
-        _graph = new Graph<>(type, 0);
+        _graph = Graph.createGraph(type);
 
         _graph.addVertex(1);
         _graph.addVertex(2);
@@ -59,15 +57,5 @@ public class GraphTest {
         _graph.addEdgeUndirected(3, 4, 0f);
         _graph.addEdgeUndirected(3, 5, 0f);
         _graph.addEdgeUndirected(4, 5, 0f);
-    }
-
-    @Test
-    public void testSize() {
-        assertEquals(_graph.size(), 5);
-    }
-
-    @Test
-    public void testIsEmpty() {
-        assertTrue(!_graph.isEmpty());
     }
 }

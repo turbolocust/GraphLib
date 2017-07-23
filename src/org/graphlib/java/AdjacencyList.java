@@ -23,16 +23,14 @@
  */
 package org.graphlib.java;
 
-import org.graphlib.java.component.Edge;
-import org.graphlib.java.component.Vertex;
-import org.graphlib.java.exception.GraphException;
-import org.graphlib.java.interfaces.AdjacencyStructure;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,10 +39,10 @@ import java.util.logging.Logger;
  * Manages relationships between vertices using a map of lists.
  *
  * @author Matthias Fussenegger
- * @param <T> Generic type parameter for identifier
- * @param <V> Generic type parameter for edge weight
+ * @param <T> type of the identifier.
+ * @param <V> type of the weight.
  */
-public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
+public final class AdjacencyList<T, V> extends Graph<T, V> {
 
     /**
      * Static reference to logger of this class.
@@ -52,9 +50,9 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
     private static final Logger LOG = Logger.getLogger(AdjacencyList.class.getName());
 
     /**
-     * A set that stores the identifiers of each vertex.
+     * Map that stores the Vertex to its key.
      */
-    private final Set<T> _vertices;
+    private final Map<T, Vertex<T>> _vertices;
 
     /**
      * A map that stores the adjacent edges of each vertex.
@@ -62,23 +60,35 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
     private final Map<T, LinkedList<Edge<T, V>>> _adjEdges;
 
     /**
-     * The graph that is associated with this class.
+     * Constructs a new adjacency list.
      */
-    private final Graph<T, V> _graph;
+    public AdjacencyList() {
+        _vertices = new HashMap<>();
+        _adjEdges = new HashMap<>();
+    }
 
     /**
-     * Constructs a new adjacency list.
+     * Returns the edge that connects the vertices with the specified
+     * identifiers. If there is no edge, {@code null} will be returned.
      *
-     * @param graph The associated {@link Graph}.
-     * @throws org.graphlib.java.exception.GraphException If graph is not empty.
+     * @param id1 identifier of the first edge.
+     * @param id2 identifier of the second edge.
+     * @return the edge that connects the two vertices or {@code null}.
      */
-    public AdjacencyList(Graph<T, V> graph) throws GraphException {
-        if (!graph.isEmpty()) {
-            throw new GraphException("Graph is not empty");
+    private Edge<T, V> getEdge(T id1, T id2) {
+        LinkedList<Edge<T, V>> list = _adjEdges.get(id1);
+        Edge<T, V> edge = null;
+        if (list != null) {
+            final Iterator<Edge<T, V>> iter = list.iterator();
+            while (iter.hasNext()) { // loop to check first identifier
+                Edge<T, V> nextEdge = iter.next();
+                if (nextEdge.getTarget(id1).equals(id2)) {
+                    edge = nextEdge;
+                    break;
+                }
+            }
         }
-        _vertices = new HashSet<>();
-        _adjEdges = new HashMap<>();
-        _graph = graph;
+        return edge;
     }
 
     @Override
@@ -92,10 +102,9 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
     }
 
     @Override
-    public boolean addVertex(T identifier) {
-        if (!containsVertex(identifier)) {
-            _vertices.add(identifier);
-            _graph.putVertex(identifier);
+    public boolean addVertex(T id) {
+        if (!containsVertex(id)) {
+            _vertices.put(id, new Vertex<>(id));
             return true;
         }
         return false;
@@ -103,13 +112,12 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
 
     @Override
     public boolean addVertex(Vertex<T> v) {
-        _graph.putVertex(v);
         return addVertex(v.getId());
     }
 
     @Override
     public boolean containsVertex(T id) {
-        return _vertices.contains(id);
+        return _vertices.containsKey(id);
     }
 
     @Override
@@ -119,14 +127,13 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
 
     @Override
     public Edge<T, V> addEdgeDirected(T v1, T v2, V weight) {
-        if (containsEdgeDirected(v1, v2)) {
+        if (getVertex(v1) == null || getVertex(v2) == null
+                || containsEdgeDirected(v1, v2)) {
             return null;
         }
-        addVertex(v1);
-        addVertex(v2);
-        /*get list from edges and update neighbours*/
+        // get list from edges and update neighbours
         LinkedList<Edge<T, V>> list1 = _adjEdges.get(v1);
-        /*instantiate new edge and add it to the map*/
+        // instantiate new edge and add it to the map
         Edge<T, V> e = new Edge<>(v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
@@ -148,15 +155,14 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
 
     @Override
     public Edge<T, V> addEdgeUndirected(T v1, T v2, V weight) {
-        if (containsEdgeDirected(v1, v2) || containsEdgeDirected(v2, v1)) {
+        if (getVertex(v1) == null || getVertex(v2) == null
+                || containsEdgeDirected(v1, v2) || containsEdgeDirected(v2, v1)) {
             return null;
         }
-        addVertex(v1);
-        addVertex(v2);
-        /*get lists from edges and update neighbours*/
+        // get lists from edges and update neighbours
         LinkedList<Edge<T, V>> list1 = _adjEdges.get(v1);
         LinkedList<Edge<T, V>> list2 = _adjEdges.get(v2);
-        /*instantiate new edge and add it to the map*/
+        // instantiate new edge and add it to the map
         Edge<T, V> e = new Edge<>(v1, v2, weight);
         if (list1 == null) {
             list1 = new LinkedList<>();
@@ -182,34 +188,39 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
     }
 
     @Override
-    public List<T> getAdjacentVertices(T identifier) {
-        LinkedList<T> vertices = new LinkedList<>();
-        LinkedList<Edge<T, V>> adjEdges = _adjEdges.get(identifier);
+    public Vertex<T> getVertex(T id) {
+        return _vertices.get(id);
+    }
 
-        adjEdges.forEach((e) -> {
-            vertices.add(e.getTarget(identifier));
-        });
+    @Override
+    public List<Vertex<T>> getVertices() {
+        List<Vertex<T>> vertices = new ArrayList<>(_vertices.size());
+        for (Entry<T, Vertex<T>> entry : _vertices.entrySet()) {
+            vertices.add(entry.getValue());
+        }
+        return Collections.unmodifiableList(vertices);
+    }
+
+    @Override
+    public List<Vertex<T>> getAdjacentVertices(T id) {
+        LinkedList<Vertex<T>> vertices = new LinkedList<>();
+        LinkedList<Edge<T, V>> adjEdges = _adjEdges.get(id);
+        for (Edge<T, V> edge : adjEdges) {
+            vertices.add(_vertices.get(edge.getTarget(id)));
+        }
         return vertices;
     }
 
     @Override
-    public List<Edge<T, V>> getAdjacentEdges(T identifier) {
-        return _adjEdges.get(identifier);
+    public List<Edge<T, V>> getAdjacentEdges(T id) {
+        return _adjEdges.get(id);
     }
 
     @Override
     public boolean containsEdgeDirected(T id1, T id2) {
-        LinkedList<Edge<T, V>> list = _adjEdges.get(id1);
-        T temp; //temporary identifier of vertex
-
-        /*loop to check first identifier*/
-        for (int i = 0; list != null && i < list.size(); ++i) {
-            temp = list.get(i).getTarget(id1);
-            if (temp.equals(id2)) {
-                return true;
-            }
-        }
-        return false;
+        Edge<T, V> e1 = getEdge(id1, id2);
+        Edge<T, V> e2 = getEdge(id2, id1);
+        return e1 != null && (e2 == null || !e1.equals(e2));
     }
 
     @Override
@@ -219,7 +230,9 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
 
     @Override
     public boolean containsEdgeUndirected(T id1, T id2) {
-        return containsEdgeDirected(id1, id2) && containsEdgeDirected(id2, id1);
+        Edge<T, V> e1 = getEdge(id1, id2);
+        Edge<T, V> e2 = getEdge(id2, id1);
+        return e1 != null && e2 != null && e1.equals(e2);
     }
 
     @Override
@@ -234,7 +247,7 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
             Iterator<T> iter = set.iterator();
             List<Edge<T, V>> edges;
             StringBuilder output = new StringBuilder();
-            StringBuilder builder = new StringBuilder();
+            StringBuilder builder = new StringBuilder("\n");
             while (iter.hasNext()) {
                 T next = iter.next();
                 edges = _adjEdges.get(next);
@@ -248,5 +261,56 @@ public class AdjacencyList<T, V> implements AdjacencyStructure<T, V> {
             }
             LOG.log(Level.INFO, output.toString());
         }
+    }
+
+    @Override
+    public boolean isEulerian() {
+        int i = 0;
+        if (!isEmpty()) {
+            Set<T> set = _vertices.keySet();
+            Iterator<T> iter = set.iterator();
+            while (iter.hasNext()) {
+                T next = iter.next();
+                List<Edge<T, V>> edges = getAdjacentEdges(next);
+                if ((edges.size() % 2) != 0) { // odd
+                    ++i;
+                }
+            }
+        }
+        return i == 0 || i == 2;
+    }
+
+    @Override
+    public boolean isEulerianTrail() {
+        int i = 0;
+        if (!isEmpty()) {
+            Set<T> set = _vertices.keySet();
+            Iterator<T> iter = set.iterator();
+            while (iter.hasNext()) {
+                T next = iter.next();
+                List<Edge<T, V>> edges = getAdjacentEdges(next);
+                if ((edges.size() % 2) != 0) { // odd
+                    ++i;
+                }
+            }
+        }
+        return i == 2;
+    }
+
+    @Override
+    public boolean isEulerianCycle() {
+        int i = 0;
+        if (!isEmpty()) {
+            Set<T> set = _vertices.keySet();
+            Iterator<T> iter = set.iterator();
+            while (iter.hasNext()) {
+                T next = iter.next();
+                List<Edge<T, V>> edges = getAdjacentEdges(next);
+                if ((edges.size() % 2) != 0) { // odd
+                    ++i;
+                }
+            }
+        }
+        return i == 0;
     }
 }

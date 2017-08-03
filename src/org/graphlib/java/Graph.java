@@ -37,6 +37,9 @@ import org.graphlib.java.api.Eulerian;
  */
 public abstract class Graph<T, V> implements AdjacencyStructure<T, V>, Eulerian {
 
+    protected Graph() {
+    }
+
     /**
      * Initializes a new graph with the specified adjacency structure.
      *

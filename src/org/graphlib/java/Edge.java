@@ -55,7 +55,7 @@ public class Edge<T, V> {
      * @param vertex1 the source vertex.
      * @param vertex2 the target vertex.
      */
-    public Edge(T vertex1, T vertex2) {
+    public Edge(final T vertex1, final T vertex2) {
         _source = vertex1;
         _target = vertex2;
         _color = Color.WHITE;
@@ -68,7 +68,7 @@ public class Edge<T, V> {
      * @param vertex2 the target vertex.
      * @param weight the weight of the edge.
      */
-    public Edge(T vertex1, T vertex2, V weight) {
+    public Edge(final T vertex1, final T vertex2, V weight) {
         _weight = weight;
         _source = vertex1;
         _target = vertex2;
@@ -81,7 +81,7 @@ public class Edge<T, V> {
      * @param vertex the source vertex to be set.
      * @return false if source is already set.
      */
-    public boolean setSource(T vertex) {
+    public boolean setSource(final T vertex) {
         if (_source != null) {
             _source = vertex;
             return true;
@@ -95,7 +95,7 @@ public class Edge<T, V> {
      * @param vertex the target vertex to be set.
      * @return false if target is already set.
      */
-    public boolean setTarget(T vertex) {
+    public boolean setTarget(final T vertex) {
         if (_target != null) {
             _target = vertex;
             return true;

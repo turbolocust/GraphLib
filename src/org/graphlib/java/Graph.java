@@ -23,6 +23,7 @@
  */
 package org.graphlib.java;
 
+import java.util.Objects;
 import org.graphlib.java.api.AdjacencyStructure;
 import org.graphlib.java.api.Eulerian;
 
@@ -45,11 +46,13 @@ public abstract class Graph<T, V> implements AdjacencyStructure<T, V>, Eulerian 
      *
      * @param <T> type of the identifier.
      * @param <V> type of the weight.
-     * @param type graph will be backed by this adjacency structure.
+     * @param type graph will be backed by this adjacency structure. Must not be
+     * {@code null}.
      * @return a new instance of {@link Graph} which is backed by the specified
      * type of adjacency structure.
      */
     public static <T, V> Graph<T, V> createGraph(AdjacencyStructureType type) {
+        Objects.requireNonNull(type);
         Graph<T, V> structure;
         switch (type) {
             case LIST:

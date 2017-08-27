@@ -49,7 +49,7 @@ public class Vertex<T> {
      *
      * @param id the identifier of the new vertex.
      */
-    public Vertex(T id) {
+    public Vertex(final T id) {
         _identifier = id;
     }
 

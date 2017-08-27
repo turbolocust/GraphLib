@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,7 +48,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     /**
      * The default size of the matrix (n*n) if not specified.
      */
-    private final int DEFAULT_SIZE = 32;
+    private final int DEFAULT_SIZE = 1 << 5;
 
     /**
      * Constant to define if a value in matrix has not been found.
@@ -108,7 +107,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
      * @param id the identifier of the vertex.
      * @return the index of the vertex in the one-dimensional array.
      */
-    private int getIndex(T id) {
+    private int getIndex(final T id) {
         for (int i = 0; i < _numVertices; ++i) {
             Vertex<T> vertex = _vertices[i];
             if (vertex != null && vertex.getId().equals(id)) {
@@ -136,18 +135,18 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean isEmpty() {
+    public final boolean isEmpty() {
         return _numVertices == 0;
     }
 
     @Override
-    public int size() {
+    public final int size() {
         return _numVertices;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean addVertex(T id) {
+    public final boolean addVertex(final T id) {
         if (_numVertices == _vertices.length) {
             resize();
         }
@@ -160,22 +159,22 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean addVertex(Vertex<T> v) {
+    public final boolean addVertex(Vertex<T> v) {
         return addVertex(v.getId());
     }
 
     @Override
-    public boolean containsVertex(T id) {
+    public final boolean containsVertex(final T id) {
         return getIndex(id) != NOT_FOUND;
     }
 
     @Override
-    public boolean containsVertex(Vertex<T> v1) {
+    public final boolean containsVertex(Vertex<T> v1) {
         return containsVertex(v1.getId());
     }
 
     @Override
-    public Edge<T, V> addEdgeDirected(T id1, T id2, V weight) {
+    public final Edge<T, V> addEdgeDirected(final T id1, final T id2, V weight) {
         int i = getIndex(id2);
         int j = getIndex(id1);
         if (i != NOT_FOUND && j != NOT_FOUND && _adjMatrix[i][j] == null) {
@@ -187,17 +186,17 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public Edge<T, V> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, V weight) {
+    public final Edge<T, V> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, V weight) {
         return addEdgeDirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
-    public Edge<T, V> addEdgeDirected(Edge<T, V> e) {
+    public final Edge<T, V> addEdgeDirected(Edge<T, V> e) {
         return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
-    public Edge<T, V> addEdgeUndirected(T id1, T id2, V weight) {
+    public final Edge<T, V> addEdgeUndirected(final T id1, final T id2, V weight) {
         if (!containsEdgeDirected(id1, id2) && !containsEdgeDirected(id2, id1)) {
             int i = getIndex(id2);
             int j = getIndex(id1);
@@ -214,29 +213,28 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public Edge<T, V> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, V weight) {
+    public final Edge<T, V> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, V weight) {
         return addEdgeUndirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
-    public Edge<T, V> addEdgeUndirected(Edge<T, V> e) {
+    public final Edge<T, V> addEdgeUndirected(Edge<T, V> e) {
         return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
     @Override
-    public Vertex<T> getVertex(T id) {
-        id = Objects.requireNonNull(id);
+    public final Vertex<T> getVertex(final T id) {
         final int i = getIndex(id);
         return i != NOT_FOUND ? _vertices[i] : null;
     }
 
     @Override
-    public List<Vertex<T>> getVertices() {
+    public final List<Vertex<T>> getVertices() {
         return Collections.unmodifiableList(Arrays.asList(_vertices));
     }
 
     @Override
-    public List<Vertex<T>> getAdjacentVertices(T id) {
+    public final List<Vertex<T>> getAdjacentVertices(final T id) {
         LinkedList<Vertex<T>> vertices = new LinkedList<Vertex<T>>();
         int column = getIndex(id);
         for (int i = 0; i < _adjMatrix.length; ++i) {
@@ -248,7 +246,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public List<Edge<T, V>> getAdjacentEdges(T id) {
+    public final List<Edge<T, V>> getAdjacentEdges(final T id) {
         LinkedList<Edge<T, V>> edges = new LinkedList<Edge<T, V>>();
         int column = getIndex(id);
         for (int i = 0; i < _adjMatrix.length; ++i) {
@@ -260,7 +258,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean containsEdgeDirected(T id1, T id2) {
+    public final boolean containsEdgeDirected(final T id1, final T id2) {
         int i = getIndex(id1);
         int j = getIndex(id2);
         if (i == NOT_FOUND || j == NOT_FOUND) {
@@ -272,12 +270,12 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean containsEdgeDirected(Vertex<T> v1, Vertex<T> v2) {
+    public final boolean containsEdgeDirected(Vertex<T> v1, Vertex<T> v2) {
         return containsEdgeDirected(v1.getId(), v2.getId());
     }
 
     @Override
-    public boolean containsEdgeUndirected(T id1, T id2) {
+    public final boolean containsEdgeUndirected(final T id1, final T id2) {
         int i = getIndex(id1);
         int j = getIndex(id2);
         if (i == NOT_FOUND && j == NOT_FOUND) {
@@ -289,7 +287,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean containsEdgeUndirected(Vertex<T> v1, Vertex<T> v2) {
+    public final boolean containsEdgeUndirected(Vertex<T> v1, Vertex<T> v2) {
         return containsEdgeUndirected(v1.getId(), v2.getId());
     }
 
@@ -322,7 +320,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean isEulerian() {
+    public final boolean isEulerian() {
         int c = 0;
         if (!isEmpty()) {
             for (int i = 0; i < _vertices.length; ++i) {
@@ -339,7 +337,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean isEulerianTrail() {
+    public final boolean isEulerianTrail() {
         int c = 0;
         if (!isEmpty()) {
             for (int i = 0; i < _vertices.length; ++i) {
@@ -356,7 +354,7 @@ public final class AdjacencyMatrix<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public boolean isEulerianCycle() {
+    public final boolean isEulerianCycle() {
         int c = 0;
         if (!isEmpty()) {
             for (int i = 0; i < _vertices.length; ++i) {

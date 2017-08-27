@@ -111,7 +111,7 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public final boolean addVertex(final Vertex<T> v) {
+    public final boolean addVertex(Vertex<T> v) {
         return addVertex(v.getId());
     }
 
@@ -121,7 +121,7 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public final boolean containsVertex(final Vertex<T> v1) {
+    public final boolean containsVertex(Vertex<T> v1) {
         return _vertices.indexOf(v1) > -1;
     }
 
@@ -144,12 +144,12 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public final Edge<T, V> addEdgeDirected(final Vertex<T> v1, final Vertex<T> v2, V weight) {
+    public final Edge<T, V> addEdgeDirected(Vertex<T> v1, Vertex<T> v2, V weight) {
         return addEdgeDirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
-    public final Edge<T, V> addEdgeDirected(final Edge<T, V> e) {
+    public final Edge<T, V> addEdgeDirected(Edge<T, V> e) {
         return addEdgeDirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
@@ -178,12 +178,12 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public final Edge<T, V> addEdgeUndirected(final Vertex<T> v1, final Vertex<T> v2, V weight) {
+    public final Edge<T, V> addEdgeUndirected(Vertex<T> v1, Vertex<T> v2, V weight) {
         return addEdgeUndirected(v1.getId(), v2.getId(), weight);
     }
 
     @Override
-    public final Edge<T, V> addEdgeUndirected(final Edge<T, V> e) {
+    public final Edge<T, V> addEdgeUndirected(Edge<T, V> e) {
         return addEdgeUndirected(e.getSource(), e.getTarget(), e.getWeight());
     }
 
@@ -222,7 +222,7 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public final boolean containsEdgeDirected(final Vertex<T> v1, final Vertex<T> v2) {
+    public final boolean containsEdgeDirected(Vertex<T> v1, Vertex<T> v2) {
         return containsEdgeDirected(v1.getId(), v2.getId());
     }
 
@@ -234,7 +234,7 @@ public final class AdjacencyList<T, V> extends Graph<T, V> {
     }
 
     @Override
-    public final boolean containsEdgeUndirected(final Vertex<T> v1, final Vertex<T> v2) {
+    public final boolean containsEdgeUndirected(Vertex<T> v1, Vertex<T> v2) {
         return containsEdgeUndirected(v1.getId(), v2.getId());
     }
 

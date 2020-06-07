@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Matthias Fussenegger
+ * Copyright 2020 Matthias Fussenegger
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,8 +23,8 @@
  */
 package org.graphlib.java;
 
-import java.awt.Color;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A vertex is a node of the graph and can be linked with other ones by edges.
@@ -40,9 +40,9 @@ public class Vertex<T> {
     private final T _identifier;
 
     /**
-     * The color is e.g. used for searching algorithms.
+     * Custom properties (or additional weights) of this vertex.
      */
-    private Color _color;
+    private final Map<String, Object> _properties;
 
     /**
      * Initializes a new vertex with the defined identifier.
@@ -51,24 +51,27 @@ public class Vertex<T> {
      */
     public Vertex(final T id) {
         _identifier = id;
+        _properties = new HashMap<String, Object>();
     }
 
     /**
-     * Sets the color of this vertex.
+     * Sets a property (or additional weight) of this vertex.
      *
-     * @param c the color of this vertex.
+     * @param key the key (or name) of the property.
+     * @param value the value to be associated with the key.
      */
-    public void setColor(Color c) {
-        _color = c;
+    public void setProperty(String key, Object value) {
+        _properties.put(key, value);
     }
 
     /**
-     * Returns the color of this vertex.
+     * Returns a property (or additional weight) of this vertex.
      *
-     * @return the color of this vertex.
+     * @param key the key (or name) of the property.
+     * @return the value that is associated with the key.
      */
-    public Color getColor() {
-        return _color;
+    public Object getProperty(String key) {
+        return _properties.get(key);
     }
 
     /**
@@ -83,8 +86,7 @@ public class Vertex<T> {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 89 * hash + Objects.hashCode(_identifier);
-        hash = 89 * hash + Objects.hashCode(_color);
+        hash = 23 * hash + (_identifier != null ? _identifier.hashCode() : 0);
         return hash;
     }
 
@@ -100,10 +102,8 @@ public class Vertex<T> {
             return false;
         }
         final Vertex<?> other = (Vertex<?>) obj;
-        if (!Objects.equals(_identifier, other._identifier)) {
-            return false;
-        }
-        return Objects.equals(_color, other._color);
+        return !(_identifier != other._identifier && (_identifier == null
+                || !_identifier.equals(other._identifier)));
     }
 
     @Override

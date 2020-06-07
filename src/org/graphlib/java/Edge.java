@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2017 Matthias Fussenegger
+ * Copyright 2020 Matthias Fussenegger
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,8 @@
  */
 package org.graphlib.java;
 
-import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An edge links two vertices in one or in both directions.
@@ -45,9 +46,9 @@ public class Edge<T, V> {
     private V _weight;
 
     /**
-     * The color is e.g. used for searching algorithms.
+     * Custom properties (or additional weights) of this edge.
      */
-    private Color _color;
+    private final Map<String, Object> _properties;
 
     /**
      * Initializes a new edge with given source/target.
@@ -58,7 +59,7 @@ public class Edge<T, V> {
     public Edge(final T vertex1, final T vertex2) {
         _source = vertex1;
         _target = vertex2;
-        _color = Color.WHITE;
+        _properties = new HashMap<String, Object>();
     }
 
     /**
@@ -72,7 +73,7 @@ public class Edge<T, V> {
         _weight = weight;
         _source = vertex1;
         _target = vertex2;
-        _color = Color.WHITE;
+        _properties = new HashMap<String, Object>();
     }
 
     /**
@@ -104,12 +105,13 @@ public class Edge<T, V> {
     }
 
     /**
-     * Sets the color of this edge.
+     * Sets a property (or additional weight) of this edge.
      *
-     * @param c the color of this edge.
+     * @param key the key (or name) of the property.
+     * @param value the value to be associated with the key.
      */
-    public void setColor(Color c) {
-        _color = c;
+    public void setProperty(String key, Object value) {
+        _properties.put(key, value);
     }
 
     /**
@@ -146,12 +148,13 @@ public class Edge<T, V> {
     }
 
     /**
-     * Returns the color of this edge.
+     * Returns a property (or additional weight) of this edge.
      *
-     * @return the color of this edge.
+     * @param key the key (or name) of the property.
+     * @return the value that is associated with the key.
      */
-    public Color getColor() {
-        return _color;
+    public Object getProperty(String key) {
+        return _properties.get(key);
     }
 
     /**
